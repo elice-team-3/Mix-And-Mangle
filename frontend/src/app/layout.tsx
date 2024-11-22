@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-dvh bg-gray-100">
-        <div className="phone:w-full mx-auto h-full w-[40%] bg-white">
+        <div className="mx-auto h-full w-[30%] bg-white px-12 py-24 phone:w-full">
           {children}
         </div>
       </body>
