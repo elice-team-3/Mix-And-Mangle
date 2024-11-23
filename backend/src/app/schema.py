@@ -56,6 +56,7 @@ class EventCreateRequest(BaseModel):
     status: EVENTSTATUS = Field(EVENTSTATUS.PENDING, description="이벤트 상태")
     start_date: datetime = Field(..., description="이벤트 시작일")
     end_date: datetime = Field(..., description="이벤트 종료일")
+    participant_count: int = Field(0, description="참가자 수")
     event_category: str = Field(..., description="이벤트 카테고리")
     additional_info: str = Field("", description="추가 정보")
 
@@ -78,6 +79,7 @@ class EventUpdateRequest(BaseModel):
     status: EVENTSTATUS | None = Field(EVENTSTATUS.PENDING, description="이벤트 상태")
     start_date: datetime | None = Field(..., description="이벤트 시작일")
     end_date: datetime | None = Field(..., description="이벤트 종료일")
+    participant_count: int = Field(0, description="참가자 수")
     event_category: str | None = Field(..., description="이벤트 카테고리")
     additional_info: str | None = Field("", description="추가 정보")
 
@@ -102,6 +104,7 @@ class EventResponse(BaseModel):
     status: str = Field(..., description="이벤트 상태")
     start_date: str = Field(..., description="이벤트 시작일")
     end_date: str = Field(..., description="이벤트 종료일")
+    participant_count: int = Field(0, description="참가자 수")
     event_category: str | None = Field(..., description="이벤트 카테고리")
     additional_info: str = Field("", description="추가 정보")
     created_at: str = Field(..., description="생성일")
