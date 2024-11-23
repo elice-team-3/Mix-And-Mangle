@@ -19,7 +19,6 @@ class UserCreateRequest(BaseModel):
     job: str = Field(None, description="직업")
     personality: PERSONALITY | None = Field(None, description="성격")
     interest: list[str] = Field([], description="관심사")
-    hobby: list[str] = Field([], description="취미")
 
 
 class UserUpdateRequest(BaseModel):
@@ -29,7 +28,6 @@ class UserUpdateRequest(BaseModel):
     job: str | None = Field(None, description="직업")
     personality: PERSONALITY | None = Field(None, description="성격")
     interest: list[str] | None = Field([], description="관심사")
-    hobby: list[str] | None = Field([], description="취미")
 
 
 class UserResponse(BaseModel):
@@ -40,7 +38,6 @@ class UserResponse(BaseModel):
     job: str = Field(None, description="직업")
     personality: PERSONALITY | None = Field(None, description="성격")
     interest: list[str] = Field([], description="관심사")
-    hobby: list[str] = Field([], description="취미")
 
     created_at: str = Field(..., description="생성일")
     updated_at: str = Field(..., description="수정일")

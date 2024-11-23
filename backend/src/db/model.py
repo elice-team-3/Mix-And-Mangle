@@ -70,7 +70,6 @@ class User(TimestampAndSoftDeleteBase):
     job: Mapped[str] = mapped_column(nullable=True)
     personality: Mapped[str] = mapped_column(nullable=True)
     interest: Mapped[list] = mapped_column(JSON, default=[], nullable=True)
-    hobby: Mapped[list] = mapped_column(JSON, default=[], nullable=True)
 
     # Relationship
     sessions: Mapped["Session"] = relationship(

@@ -119,6 +119,8 @@ async def _(
         .order_by(Event.created_at.desc())
     )
 
+    event_list = set(event_list.all())
+    print(len(event_list))
     return [
         EventResponse(
             event_id=event.id,
@@ -224,7 +226,7 @@ async def _(
         elice_client=Depends(get_elice_client)
 ):
     grouping_instruction = [
-        f"다음 기준에 따라 참가자들을 {grouping_option.count}개 조로 최대한 균등하게 편성해줘\n"
+        f"다음 기준에 따라 참가자들을 1번 조부터 {grouping_option.count}개 조로 최대한 균등하게 편성해줘\n"
         f"직업 : {grouping_option.job.value}\n",
         f"성격 : {grouping_option.personality.value}\n",
         f"관심사 : {grouping_option.interest.value}\n",
@@ -236,7 +238,7 @@ async def _(
         .where(Session.event_id == event_id)
         .where(User.is_deleted == False)
     )
-    users = users.all()
+    users = set(users.all())
     if len(users) <= grouping_option.count:
         raise HTTPException(409, f"참여자가 부족합니다 {len(users)}")
 
@@ -249,15 +251,10 @@ async def _(
                 f"생일 : {user.birth_date}\n",
                 f"직업 : {user.job}\n",
                 f"성격 : {user.personality}\n",
-                f"관심사 : {user.hobby}\n"
             ]
         )
 
-    grouping_instruction.append(
-        [
-            "균등하게 편성한 결과를 {user_id: 조번호} 와 같은 json 형태로 출력해줘",
-        ]
-    )
+    grouping_instruction.append("균등하게 편성한 결과를 {user_id: 조번호} 와 같은 json 형태로 출력해줘")
     print("".join(grouping_instruction))
     message = [{
         "role": "user",
@@ -295,7 +292,7 @@ async def _(
     )
 
     group_info: dict = request.group_info
-    sessions = list(sessions)
+    sessions = set(list(sessions))
     for session in sessions:
         if group_id := group_info.get(session.user_id):
             session.group_id = group_id
