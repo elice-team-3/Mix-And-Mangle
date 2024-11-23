@@ -126,6 +126,13 @@ class SessionCreateRequest(BaseModel):
     event_id: int = Field(..., description="이벤트 아이디")
 
 
+@dataclass
+class SessionListQuery:
+    user_id: str | None = Query(default=None, description="사용자 아이디")
+    event_id: int | None = Query(default=None, description="이벤트 아이디")
+    group_id: int | None = Query(default=None, description="그룹 아이디")
+
+
 class SessionResponse(BaseModel):
     session_id: int = Field(..., description="세션 아이디")
     user_id: str = Field(..., description="사용자 아이디")
@@ -146,6 +153,14 @@ class QuizCreateRequest(BaseModel):
     answer: str = Field(..., description="정답")
     options: list[str] = Field(..., description="선택지")
 
+class QuizSchema(BaseModel):
+    question: str = Field(..., description="문제")
+    answer: str = Field(..., description="정답")
+    options: list[str] = Field(..., description="선택지")
+
+class QuizBulkCreateSchema(BaseModel):
+    event_id: int = Field(..., description="이벤트 아이디")
+    quizzes: list[QuizSchema] = Field(..., description="퀴즈 목록")
 
 @dataclass
 class QuizListRequest:
