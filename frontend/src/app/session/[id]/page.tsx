@@ -32,7 +32,7 @@ type EventState =
 
 const Page = ({ params }: PageProps) => {
   const { socket } = useSocket()
-  const { user } = useUserStore()
+  const { user, isMaster } = useUserStore()
 
   const eventQuery = useApiEventsEventIdGetSuspense(Number(params.id))
   const event = eventQuery.data
@@ -44,13 +44,13 @@ const Page = ({ params }: PageProps) => {
   const [topic, setTopic] = useState('')
 
   useLayoutEffect(() => {
-    if (!user) {
+    if (!user && !isMaster) {
       return
     }
 
     socket.emit('join', {
       event_id: params.id,
-      user_id: user.user_id,
+      user_id: user?.user_id || 'master',
     })
 
     socket.on('event.start', () => {

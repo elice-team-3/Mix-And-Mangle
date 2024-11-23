@@ -22,7 +22,6 @@ export default function Home() {
 
   const handleClickMaster = () => {
     setIsMaster(true)
-
     router.push('/event')
   }
 

@@ -16,7 +16,7 @@ const InitialSetting = () => {
   const { setUser, setIsMaster } = useUserStore()
   useEffect(() => {
     setUser(getLocalStorage('user') as UserResponse)
-    setIsMaster(getLocalStorage('isMaster') === 'true')
+    setIsMaster(getLocalStorage('isMaster') as boolean)
 
     AXIOS_INSTANCE.interceptors.response.use(
       (response) => {

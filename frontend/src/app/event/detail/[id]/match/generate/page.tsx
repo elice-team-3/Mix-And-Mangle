@@ -28,8 +28,15 @@ const Page = (props: PageProps) => {
 
   const [isComplete, setIsComplete] = useState(false)
 
-  const { job, personality, interest, teamCount, setMatched, selectedQuizs } =
-    useEventFunnelStore()
+  const {
+    job,
+    personality,
+    interest,
+    teamCount,
+    resetQuiz,
+    setMatched,
+    selectedQuizs,
+  } = useEventFunnelStore()
 
   const existQuizQuery = useApiQuizGetSuspense({
     event_id: parseInt(props.params.id),
@@ -89,6 +96,10 @@ const Page = (props: PageProps) => {
                 setIsComplete(true)
               }, 1000)
             }
+          },
+          onError: () => {
+            resetQuiz()
+            router.back()
           },
         },
       )

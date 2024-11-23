@@ -10,8 +10,6 @@ import { io } from 'socket.io-client'
 
 const SOCKET_URL = 'wss://qkewybjsseagatzq.tunnel-pt.elice.io'
 
-console.log('SOCKET_URL', SOCKET_URL)
-
 export const socket = io(SOCKET_URL, {
   reconnectionDelay: 10000,
 })

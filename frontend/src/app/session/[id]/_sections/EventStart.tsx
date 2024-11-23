@@ -80,7 +80,7 @@ const EventStart = ({ event }: { event: EventResponse }) => {
       />
       <ChatBubble>{message}</ChatBubble>
       {isMaster && (
-        <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
+        <div className="fixed bottom-0 left-0 mx-auto flex w-full gap-16 p-16 phone:w-full">
           <Button
             type="button"
             onClick={() => {

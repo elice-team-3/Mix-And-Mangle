@@ -5,9 +5,11 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 import { EventResponse } from '@/services/api.schemas'
 import { useUserStore } from '@/store/user'
+import { Button } from '@/components/ui/button'
 
 import EventDeleteDialog from './EventDeleteDialog'
 
@@ -89,8 +91,13 @@ const EventBlock = ({ event }: EventBlockProps) => {
             <div className="h-1 w-full bg-gray-200" />
           </div>
 
-          <div className="flex w-full justify-end gap-16">
-            <EventDeleteDialog event={event} />
+          <div className="flex w-full items-center justify-end gap-16">
+            {isMaster && (
+              <Link href={`/session/${event.event_id}`}>
+                <Button size="sm">세션 참가</Button>
+              </Link>
+            )}
+            {isMaster && <EventDeleteDialog event={event} />}
           </div>
         </div>
       </div>
