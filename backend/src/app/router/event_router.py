@@ -1,14 +1,18 @@
 import re
 import json
 from datetime import datetime
-from tokenize import group
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.schema import EventResponse, EventCreateRequest, EventUpdateRequest, EventGroupingRequest, EventGroupInfo, \
-    SessionResponse
+from src.app.schema import (
+    EventResponse,
+    EventCreateRequest,
+    EventUpdateRequest,
+    EventGroupingRequest,
+    EventGroupInfo,
+    SessionResponse, QuizBulkCreateSchema, QuizSchema
+)
 from src.client.elice_ai_client import get_elice_client
 from src.db.model import Event, User, Session
 from src.db.session import get_session
@@ -302,37 +306,58 @@ async def _(
         for session in sessions
     ]
 
+
 @router.get(
     "/events/{event_id}/ai-quiz",
     status_code=200,
     name="이벤트 퀴즈 AI 생성",
     description="이벤트에 관련된 퀴즈를 AI를 통해 생성합니다.",
-    response_model=dict,
+    response_model=QuizBulkCreateSchema,
 )
 async def _(
-    event_id: int,
-    db: AsyncSession = Depends(get_session),
-    elice_client=Depends(get_elice_client)
+        event_id: int,
+        db: AsyncSession = Depends(get_session),
+        elice_client=Depends(get_elice_client)
 ):
-    event = await db.scalars(
+    event = await db.scalar(
         select(Event)
         .where(Event.id == event_id)
         .where(Event.is_deleted == False)
     )
-    event = event.first()
+
     if not event:
         raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    quiz_instructions = [
+        f"다음 이벤트 정보를 바탕으로 퀴즈 10개를 생성해주고 퀴즈의 정답, 보기 3개를 같이 생성해줘\n",
+        f"이벤트 이름 : {event.name}\n",
+        f"이벤트 설명 : {event.description}\n",
+        f"이벤트 정보 : {event.additional_info}\n",
+    ]
+
+    quiz_instructions.append(
+        f"출력 시 다음과 같은 json 형태로 출력해줘\n"
+        '{"question": "퀴즈 질문", "answer": "정답", "options": ["보기1", "보기2", "보기3"]}'
+    )
+
+    print("".join(quiz_instructions))
 
     message = [
         {
             "role": "user",
-            "content": f"이벤트 {event.name}에 대한 퀴즈를 생성해줘"
+            "content": "".join(quiz_instructions)
         }
     ]
     resp = await elice_client.helpy_chat(message)
     print(resp)
-    matches = re.findall(r'(\{[^}]*\})', resp)
-    print(matches[0])
-    quiz = json.loads(matches[0])
 
-    return quiz
+    matches = re.findall(r'(\{[^}]*\})', resp)
+    quizzes = []
+    for match in matches:
+        quiz = json.loads(match)
+        quizzes.append(QuizSchema(**quiz))
+
+    return QuizBulkCreateSchema(
+        event_id=event_id,
+        quizzes=quizzes
+    )

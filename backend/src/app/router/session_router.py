@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from src.app.schema import SessionResponse, SessionCreateRequest
+from src.app.schema import SessionResponse, SessionCreateRequest, SessionListQuery
 from src.db.model import Session
 from src.db.session import get_session
 
@@ -94,12 +94,22 @@ async def _(
     response_description="Ok",
 )
 async def _(
+        list_query: SessionListQuery = Depends(),
         db: AsyncSession = Depends(get_session)
 ):
-    sessions = await db.scalars(
-        select(Session)
-        .where(Session.is_deleted == False)
-    )
+    stmt = select(Session).where(Session.is_deleted == False)
+
+    if list_query.event_id:
+        stmt = stmt.where(Session.event_id == list_query.event_id)
+
+    if list_query.user_id:
+        stmt = stmt.where(Session.user_id == list_query.user_id)
+
+    if list_query.group_id:
+        stmt = stmt.where(Session.group_id == list_query.group_id)
+
+    sessions = await db.scalars(stmt)
+
     return [
         SessionResponse(
             session_id=session.id,
