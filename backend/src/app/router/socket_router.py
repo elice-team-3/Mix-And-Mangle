@@ -27,6 +27,9 @@ async def _():
 @router.get(
     "/event/{event_id}/start",
     name="이벤트 시작",
+    description="이벤트를 시작하는 메시지를 보냅니다.\n"
+                "socket을 통해 event_id에 해당하는 room에\n"
+                "'event.start' event를 발생시킵니다."
 )
 async def _(
         event_id: int,
@@ -41,13 +44,16 @@ async def _(
         raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
 
     event.status = "event.start"
-    await session.commit()
     await sioserver.emit("event.start", room=event_id)
+    await session.commit()
 
 
 @router.get(
     "/event/{event_id}/start-quiz",
     name="퀴즈 시작",
+    description="퀴즈를 시작하는 메시지를 보냅니다.\n"
+                "socket을 통해 event_id에 해당하는 room에\n"
+                "'quiz.start' event를 발생시킵니다."
 )
 async def _(
         event_id: int,
@@ -70,7 +76,9 @@ async def _(
 @router.get(
     "/event/{event_id}/start-networking",
     name="네트워킹 시작",
-    description="네트워킹을 시작하는 메시지를 보냅니다."
+    description="네트워킹을 시작하는 메시지를 보냅니다.\n"
+                "socket을 통해 event_id에 해당하는 room에\n"
+                "'networking.start' event를 발생시킵니다."
 )
 async def _(
         event_id: int,
@@ -84,10 +92,10 @@ async def _(
     if not event:
         raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
 
+    await sioserver.emit("networking.start", room=event_id)
+
     event.status = "networking.start"
     await session.commit()
-
-    await sioserver.emit("network.start", room=event_id)
 
 
 @router.get(

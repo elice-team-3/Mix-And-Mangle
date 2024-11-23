@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from src.app.schema import SessionResponse, SessionCreateRequest, SessionListQuery
-from src.db.model import Session
+from src.db.model import Session, Event
 from src.db.session import get_session
 
 router = APIRouter(
@@ -31,8 +31,22 @@ async def _(
     )
     session = list(result.unique().all())
 
+    event = await db.scalar(
+        select(Event)
+        .where(Event.id == session_request.event_id)
+    )
     if session not in [None, []]:
         raise HTTPException(status_code=409, detail="이미 참여한 세션입니다.")
+
+    session_users = await db.scalars(
+        select(Session)
+        .where(Session.event_id == session_request.event_id)
+        .where(Session.is_deleted == False)
+    )
+    session_users = set(session_users.unique().all())
+
+    if event.participant_count <= len(session_users):
+        raise HTTPException(status_code=409, detail="참여 가능 인원을 초과하였습니다.")
 
     session = Session(
         user_id=session_request.user_id,

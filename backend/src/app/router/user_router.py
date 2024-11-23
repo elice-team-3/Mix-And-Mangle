@@ -41,7 +41,6 @@ async def _(
         job=request_body.job,
         personality=request_body.personality.value,
         interest=request_body.interest,
-        hobby=request_body.hobby,
     )
 
     db.add(user)
@@ -55,7 +54,6 @@ async def _(
         job=user.job,
         personality=user.personality,
         interest=user.interest,
-        hobby=user.hobby,
         created_at=user.formatted_created_at,
         updated_at=user.formatted_updated_at,
     )
@@ -92,7 +90,6 @@ async def _(
         job=user.job,
         personality=user.personality,
         interest=user.interest,
-        hobby=user.hobby,
         created_at=user.formatted_created_at,
         updated_at=user.formatted_updated_at,
     )
@@ -123,7 +120,6 @@ async def _(
             job=user.job,
             personality=user.personality,
             interest=user.interest,
-            hobby=user.hobby,
             created_at=user.formatted_created_at,
             updated_at=user.formatted_updated_at,
         )
@@ -171,7 +167,6 @@ async def _(
         job=user.job,
         personality=user.personality,
         interest=user.interest,
-        hobby=user.hobby,
         created_at=user.formatted_created_at,
         updated_at=user.formatted_updated_at,
     )

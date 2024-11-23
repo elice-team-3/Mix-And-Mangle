@@ -43,10 +43,6 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // var socket = io(
-            //     "https://feat-server-init-dev-cloud-socketio.gabiacloud.com/", // for testing on local index.html
-            //     { extraHeaders: { "X-Cloud-Session": "CLOUD_MASTER" } }
-            // );
             var socket = io(); // for request to the same server
             var roomContainer = document.getElementById('room-container');
             var chatContainer = document.getElementById('chat-container');

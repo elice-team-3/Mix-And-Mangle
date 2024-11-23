@@ -54,10 +54,10 @@ async def _(
     session.add_all(new_quizzes)
 
     await session.commit()
-    await session.refresh(new_quizzes)
-    return QuizResponse(
-        **new_quizzes.__dict__
-    )
+    for new_quiz in new_quizzes:
+        await session.refresh(new_quiz)
+
+    return [QuizResponse(**q.__dict__) for q in new_quizzes]
 
 
 @router.get(

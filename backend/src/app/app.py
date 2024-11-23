@@ -50,7 +50,7 @@ def create_app() -> ASGIApp:
     fastapi_app = fastapi.FastAPI(
         title="Mix&Mingle API",
         lifespan=lifespan,
-        version="0.3.0",
+        version="0.6.0",
         description=description,
         middleware=middlewares(),  # middleware 매개변수에 전달
         docs_url="/docs",

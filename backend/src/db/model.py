@@ -70,7 +70,6 @@ class User(TimestampAndSoftDeleteBase):
     job: Mapped[str] = mapped_column(nullable=True)
     personality: Mapped[str] = mapped_column(nullable=True)
     interest: Mapped[list] = mapped_column(JSON, default=[], nullable=True)
-    hobby: Mapped[list] = mapped_column(JSON, default=[], nullable=True)
 
     # Relationship
     sessions: Mapped["Session"] = relationship(
@@ -93,6 +92,7 @@ class Event(TimestampAndSoftDeleteBase):
     start_date: Mapped[datetime] = mapped_column(nullable=False)
     end_date: Mapped[datetime] = mapped_column(nullable=False)
 
+    participant_count: Mapped[int] = mapped_column(nullable=False)
     event_category: Mapped[str] = mapped_column(nullable=False)
     additional_info: Mapped[str] = mapped_column(nullable=True)
 
