@@ -7,11 +7,7 @@ Mix&Mingle API Server
 
  * OpenAPI spec version: 0.3.0
  */
-import {
-  useMutation,
-  useQuery,
-  useSuspenseQuery
-} from '@tanstack/react-query'
+import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -25,8 +21,9 @@ import type {
   UseQueryOptions,
   UseQueryResult,
   UseSuspenseQueryOptions,
-  UseSuspenseQueryResult
+  UseSuspenseQueryResult,
 } from '@tanstack/react-query'
+
 import type {
   AIApiEventsEventIdAiGrouppingPost200,
   EventCreateRequest,
@@ -35,591 +32,929 @@ import type {
   EventResponse,
   EventUpdateRequest,
   HTTPValidationError,
-  SessionResponse
+  SessionResponse,
 } from '../api.schemas'
-import { customInstance } from '../../utils/axios';
-import type { ErrorType, BodyType } from '../../utils/axios';
+import { customInstance } from '../../utils/axios'
+import type { ErrorType, BodyType } from '../../utils/axios'
 
-
-type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
-
+type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
  * 이벤트 목록을 조회합니다.
  * @summary 이벤트 목록 조회
  */
 export const apiEventsGet = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<EventResponse[]>(
-      {url: `/api/events`, method: 'GET', signal
-    },
-      options);
-    }
-  
+  return customInstance<EventResponse[]>(
+    { url: '/api/events', method: 'GET', signal },
+    options,
+  )
+}
 
 export const getApiEventsGetQueryKey = () => {
-    return [`/api/events`] as const;
-    }
-
-    
-export const getApiEventsGetQueryOptions = <TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
-
-const {query: queryOptions, request: requestOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getApiEventsGetQueryKey();
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventsGet>>> = ({ signal }) => apiEventsGet(requestOptions, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+  return ['/api/events'] as const
 }
 
-export type ApiEventsGetQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventsGet>>>
+export const getApiEventsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>
+  >
+  request?: SecondParameter<typeof customInstance>
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getApiEventsGetQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventsGet>>> = ({
+    signal,
+  }) => apiEventsGet(requestOptions, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof apiEventsGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsGet>>
+>
 export type ApiEventsGetQueryError = ErrorType<unknown>
 
-
-export function useApiEventsGet<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof apiEventsGet>>,
-          TError,
-          TData
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
-
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsGet<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof apiEventsGet>>,
-          TError,
-          TData
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsGet<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventsGet<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof apiEventsGet>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >
+  request?: SecondParameter<typeof customInstance>
+}): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+export function useApiEventsGet<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof apiEventsGet>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >
+  request?: SecondParameter<typeof customInstance>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventsGet<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 /**
  * @summary 이벤트 목록 조회
  */
 
-export function useApiEventsGet<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-
+export function useApiEventsGet<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
   const queryOptions = getApiEventsGetQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>
+  }
 
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey
 
-  return query;
+  return query
 }
 
+export const getApiEventsGetSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof apiEventsGet>>,
+      TError,
+      TData
+    >
+  >
+  request?: SecondParameter<typeof customInstance>
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {}
 
+  const queryKey = queryOptions?.queryKey ?? getApiEventsGetQueryKey()
 
-export const getApiEventsGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventsGet>>> = ({
+    signal,
+  }) => apiEventsGet(requestOptions, signal)
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getApiEventsGetQueryKey();
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventsGet>>> = ({ signal }) => apiEventsGet(requestOptions, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof apiEventsGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> }
 }
 
-export type ApiEventsGetSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventsGet>>>
+export type ApiEventsGetSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsGet>>
+>
 export type ApiEventsGetSuspenseQueryError = ErrorType<unknown>
 
-
-export function useApiEventsGetSuspense<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsGetSuspense<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsGetSuspense<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventsGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options: {
+  query: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof apiEventsGet>>,
+      TError,
+      TData
+    >
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+export function useApiEventsGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof apiEventsGet>>,
+      TError,
+      TData
+    >
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+export function useApiEventsGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof apiEventsGet>>,
+      TError,
+      TData
+    >
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
 /**
  * @summary 이벤트 목록 조회
  */
 
-export function useApiEventsGetSuspense<TData = Awaited<ReturnType<typeof apiEventsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-
+export function useApiEventsGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof apiEventsGet>>,
+      TError,
+      TData
+    >
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+} {
   const queryOptions = getApiEventsGetSuspenseQueryOptions(options)
 
-  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> }
 
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey
 
-  return query;
+  return query
 }
-
-
 
 /**
  * 이벤트를 생성합니다.
  * @summary 이벤트 생성
  */
 export const apiEventsPost = (
-    eventCreateRequest: BodyType<EventCreateRequest>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  eventCreateRequest: BodyType<EventCreateRequest>,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<EventResponse>(
-      {url: `/api/events`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: eventCreateRequest, signal
+  return customInstance<EventResponse>(
+    {
+      url: '/api/events',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: eventCreateRequest,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  )
+}
 
+export const getApiEventsPostMutationOptions = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsPost>>,
+    TError,
+    { data: BodyType<EventCreateRequest> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof apiEventsPost>>,
+  TError,
+  { data: BodyType<EventCreateRequest> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
-export const getApiEventsPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsPost>>, TError,{data: BodyType<EventCreateRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof apiEventsPost>>, TError,{data: BodyType<EventCreateRequest>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof apiEventsPost>>,
+    { data: BodyType<EventCreateRequest> }
+  > = (props) => {
+    const { data } = props ?? {}
 
-      
+    return apiEventsPost(data, requestOptions)
+  }
 
+  return { mutationFn, ...mutationOptions }
+}
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiEventsPost>>, {data: BodyType<EventCreateRequest>}> = (props) => {
-          const {data} = props ?? {};
+export type ApiEventsPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsPost>>
+>
+export type ApiEventsPostMutationBody = BodyType<EventCreateRequest>
+export type ApiEventsPostMutationError = ErrorType<HTTPValidationError>
 
-          return  apiEventsPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApiEventsPostMutationResult = NonNullable<Awaited<ReturnType<typeof apiEventsPost>>>
-    export type ApiEventsPostMutationBody = BodyType<EventCreateRequest>
-    export type ApiEventsPostMutationError = ErrorType<HTTPValidationError>
-
-    /**
+/**
  * @summary 이벤트 생성
  */
-export const useApiEventsPost = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsPost>>, TError,{data: BodyType<EventCreateRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof apiEventsPost>>,
-        TError,
-        {data: BodyType<EventCreateRequest>},
-        TContext
-      > => {
+export const useApiEventsPost = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsPost>>,
+    TError,
+    { data: BodyType<EventCreateRequest> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+  Awaited<ReturnType<typeof apiEventsPost>>,
+  TError,
+  { data: BodyType<EventCreateRequest> },
+  TContext
+> => {
+  const mutationOptions = getApiEventsPostMutationOptions(options)
 
-      const mutationOptions = getApiEventsPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions)
+}
+/**
  * 이벤트를 조회합니다.
  * @summary 이벤트 조회
  */
 export const apiEventsEventIdGet = (
-    eventId: number,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  eventId: number,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<EventResponse>(
-      {url: `/api/events/${eventId}`, method: 'GET', signal
-    },
-      options);
-    }
-  
-
-export const getApiEventsEventIdGetQueryKey = (eventId: number,) => {
-    return [`/api/events/${eventId}`] as const;
-    }
-
-    
-export const getApiEventsEventIdGetQueryOptions = <TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
-
-const {query: queryOptions, request: requestOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getApiEventsEventIdGetQueryKey(eventId);
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventsEventIdGet>>> = ({ signal }) => apiEventsEventIdGet(eventId, requestOptions, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, enabled: !!(eventId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+  return customInstance<EventResponse>(
+    { url: `/api/events/${eventId}`, method: 'GET', signal },
+    options,
+  )
 }
 
-export type ApiEventsEventIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventsEventIdGet>>>
+export const getApiEventsEventIdGetQueryKey = (eventId: number) => {
+  return [`/api/events/${eventId}`] as const
+}
+
+export const getApiEventsEventIdGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {}
+
+  const queryKey =
+    queryOptions?.queryKey ?? getApiEventsEventIdGetQueryKey(eventId)
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof apiEventsEventIdGet>>
+  > = ({ signal }) => apiEventsEventIdGet(eventId, requestOptions, signal)
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!eventId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventsEventIdGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsEventIdGet>>
+>
 export type ApiEventsEventIdGetQueryError = ErrorType<HTTPValidationError>
 
-
-export function useApiEventsEventIdGet<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>> & Pick<
+export function useApiEventsEventIdGet<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof apiEventsEventIdGet>>,
           TError,
           TData
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
-
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsEventIdGet<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>> & Pick<
+        >,
+        'initialData'
+      >
+    request?: SecondParameter<typeof customInstance>
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventsEventIdGet<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof apiEventsEventIdGet>>,
           TError,
           TData
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsEventIdGet<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        'initialData'
+      >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventsEventIdGet<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 /**
  * @summary 이벤트 조회
  */
 
-export function useApiEventsEventIdGet<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useApiEventsEventIdGet<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getApiEventsEventIdGetQueryOptions(eventId, options)
 
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>
+  }
 
-  const queryOptions = getApiEventsEventIdGetQueryOptions(eventId,options)
+  query.queryKey = queryOptions.queryKey
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+  return query
 }
 
-
-
-export const getApiEventsEventIdGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getApiEventsEventIdGetSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {}
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey =
+    queryOptions?.queryKey ?? getApiEventsEventIdGetQueryKey(eventId)
 
-  const queryKey =  queryOptions?.queryKey ?? getApiEventsEventIdGetQueryKey(eventId);
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof apiEventsEventIdGet>>
+  > = ({ signal }) => apiEventsEventIdGet(eventId, requestOptions, signal)
 
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventsEventIdGet>>> = ({ signal }) => apiEventsEventIdGet(eventId, requestOptions, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> }
 }
 
-export type ApiEventsEventIdGetSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventsEventIdGet>>>
-export type ApiEventsEventIdGetSuspenseQueryError = ErrorType<HTTPValidationError>
+export type ApiEventsEventIdGetSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsEventIdGet>>
+>
+export type ApiEventsEventIdGetSuspenseQueryError =
+  ErrorType<HTTPValidationError>
 
-
-export function useApiEventsEventIdGetSuspense<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsEventIdGetSuspense<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useApiEventsEventIdGetSuspense<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventsEventIdGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+export function useApiEventsEventIdGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+export function useApiEventsEventIdGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
 /**
  * @summary 이벤트 조회
  */
 
-export function useApiEventsEventIdGetSuspense<TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError = ErrorType<HTTPValidationError>>(
- eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventsEventIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useApiEventsEventIdGetSuspense<
+  TData = Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof apiEventsEventIdGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+} {
+  const queryOptions = getApiEventsEventIdGetSuspenseQueryOptions(
+    eventId,
+    options,
+  )
 
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> }
 
-  const queryOptions = getApiEventsEventIdGetSuspenseQueryOptions(eventId,options)
+  query.queryKey = queryOptions.queryKey
 
-  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+  return query
 }
-
-
 
 /**
  * 이벤트를 수정합니다.
  * @summary 이벤트 수정
  */
 export const apiEventsEventIdPut = (
-    eventId: number,
-    eventUpdateRequest: BodyType<EventUpdateRequest>,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<EventResponse>(
-      {url: `/api/events/${eventId}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: eventUpdateRequest
+  eventId: number,
+  eventUpdateRequest: BodyType<EventUpdateRequest>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<EventResponse>(
+    {
+      url: `/api/events/${eventId}`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: eventUpdateRequest,
     },
-      options);
-    }
-  
+    options,
+  )
+}
 
+export const getApiEventsEventIdPutMutationOptions = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdPut>>,
+    TError,
+    { eventId: number; data: BodyType<EventUpdateRequest> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof apiEventsEventIdPut>>,
+  TError,
+  { eventId: number; data: BodyType<EventUpdateRequest> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
-export const getApiEventsEventIdPutMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdPut>>, TError,{eventId: number;data: BodyType<EventUpdateRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdPut>>, TError,{eventId: number;data: BodyType<EventUpdateRequest>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof apiEventsEventIdPut>>,
+    { eventId: number; data: BodyType<EventUpdateRequest> }
+  > = (props) => {
+    const { eventId, data } = props ?? {}
 
-      
+    return apiEventsEventIdPut(eventId, data, requestOptions)
+  }
 
+  return { mutationFn, ...mutationOptions }
+}
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiEventsEventIdPut>>, {eventId: number;data: BodyType<EventUpdateRequest>}> = (props) => {
-          const {eventId,data} = props ?? {};
+export type ApiEventsEventIdPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsEventIdPut>>
+>
+export type ApiEventsEventIdPutMutationBody = BodyType<EventUpdateRequest>
+export type ApiEventsEventIdPutMutationError = ErrorType<HTTPValidationError>
 
-          return  apiEventsEventIdPut(eventId,data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApiEventsEventIdPutMutationResult = NonNullable<Awaited<ReturnType<typeof apiEventsEventIdPut>>>
-    export type ApiEventsEventIdPutMutationBody = BodyType<EventUpdateRequest>
-    export type ApiEventsEventIdPutMutationError = ErrorType<HTTPValidationError>
-
-    /**
+/**
  * @summary 이벤트 수정
  */
-export const useApiEventsEventIdPut = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdPut>>, TError,{eventId: number;data: BodyType<EventUpdateRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof apiEventsEventIdPut>>,
-        TError,
-        {eventId: number;data: BodyType<EventUpdateRequest>},
-        TContext
-      > => {
+export const useApiEventsEventIdPut = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdPut>>,
+    TError,
+    { eventId: number; data: BodyType<EventUpdateRequest> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+  Awaited<ReturnType<typeof apiEventsEventIdPut>>,
+  TError,
+  { eventId: number; data: BodyType<EventUpdateRequest> },
+  TContext
+> => {
+  const mutationOptions = getApiEventsEventIdPutMutationOptions(options)
 
-      const mutationOptions = getApiEventsEventIdPutMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions)
+}
+/**
  * 이벤트를 삭제합니다.
  * @summary 이벤트 삭제
  */
 export const apiEventsEventIdDelete = (
-    eventId: number,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<void>(
-      {url: `/api/events/${eventId}`, method: 'DELETE'
-    },
-      options);
-    }
-  
+  eventId: number,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/events/${eventId}`, method: 'DELETE' },
+    options,
+  )
+}
 
+export const getApiEventsEventIdDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdDelete>>,
+    TError,
+    { eventId: number },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof apiEventsEventIdDelete>>,
+  TError,
+  { eventId: number },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
-export const getApiEventsEventIdDeleteMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdDelete>>, TError,{eventId: number}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdDelete>>, TError,{eventId: number}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof apiEventsEventIdDelete>>,
+    { eventId: number }
+  > = (props) => {
+    const { eventId } = props ?? {}
 
-      
+    return apiEventsEventIdDelete(eventId, requestOptions)
+  }
 
+  return { mutationFn, ...mutationOptions }
+}
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiEventsEventIdDelete>>, {eventId: number}> = (props) => {
-          const {eventId} = props ?? {};
+export type ApiEventsEventIdDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsEventIdDelete>>
+>
 
-          return  apiEventsEventIdDelete(eventId,requestOptions)
-        }
+export type ApiEventsEventIdDeleteMutationError = ErrorType<HTTPValidationError>
 
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApiEventsEventIdDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof apiEventsEventIdDelete>>>
-    
-    export type ApiEventsEventIdDeleteMutationError = ErrorType<HTTPValidationError>
-
-    /**
+/**
  * @summary 이벤트 삭제
  */
-export const useApiEventsEventIdDelete = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdDelete>>, TError,{eventId: number}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof apiEventsEventIdDelete>>,
-        TError,
-        {eventId: number},
-        TContext
-      > => {
+export const useApiEventsEventIdDelete = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdDelete>>,
+    TError,
+    { eventId: number },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+  Awaited<ReturnType<typeof apiEventsEventIdDelete>>,
+  TError,
+  { eventId: number },
+  TContext
+> => {
+  const mutationOptions = getApiEventsEventIdDeleteMutationOptions(options)
 
-      const mutationOptions = getApiEventsEventIdDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions)
+}
+/**
  * 이벤트에 속한 참여자를 AI로 그룹핑합니다.
  * @summary 이벤트 Ai 그룹핑
  */
 export const aIApiEventsEventIdAiGrouppingPost = (
-    eventId: number,
-    eventGroupingRequest: BodyType<EventGroupingRequest>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  eventId: number,
+  eventGroupingRequest: BodyType<EventGroupingRequest>,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<AIApiEventsEventIdAiGrouppingPost200>(
-      {url: `/api/events/${eventId}/ai_groupping`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: eventGroupingRequest, signal
+  return customInstance<AIApiEventsEventIdAiGrouppingPost200>(
+    {
+      url: `/api/events/${eventId}/ai_groupping`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: eventGroupingRequest,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  )
+}
 
+export const getAIApiEventsEventIdAiGrouppingPostMutationOptions = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>,
+    TError,
+    { eventId: number; data: BodyType<EventGroupingRequest> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>,
+  TError,
+  { eventId: number; data: BodyType<EventGroupingRequest> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
-export const getAIApiEventsEventIdAiGrouppingPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>, TError,{eventId: number;data: BodyType<EventGroupingRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>, TError,{eventId: number;data: BodyType<EventGroupingRequest>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>,
+    { eventId: number; data: BodyType<EventGroupingRequest> }
+  > = (props) => {
+    const { eventId, data } = props ?? {}
 
-      
+    return aIApiEventsEventIdAiGrouppingPost(eventId, data, requestOptions)
+  }
 
+  return { mutationFn, ...mutationOptions }
+}
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>, {eventId: number;data: BodyType<EventGroupingRequest>}> = (props) => {
-          const {eventId,data} = props ?? {};
+export type AIApiEventsEventIdAiGrouppingPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>
+>
+export type AIApiEventsEventIdAiGrouppingPostMutationBody =
+  BodyType<EventGroupingRequest>
+export type AIApiEventsEventIdAiGrouppingPostMutationError =
+  ErrorType<HTTPValidationError>
 
-          return  aIApiEventsEventIdAiGrouppingPost(eventId,data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AIApiEventsEventIdAiGrouppingPostMutationResult = NonNullable<Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>>
-    export type AIApiEventsEventIdAiGrouppingPostMutationBody = BodyType<EventGroupingRequest>
-    export type AIApiEventsEventIdAiGrouppingPostMutationError = ErrorType<HTTPValidationError>
-
-    /**
+/**
  * @summary 이벤트 Ai 그룹핑
  */
-export const useAIApiEventsEventIdAiGrouppingPost = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>, TError,{eventId: number;data: BodyType<EventGroupingRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>,
-        TError,
-        {eventId: number;data: BodyType<EventGroupingRequest>},
-        TContext
-      > => {
+export const useAIApiEventsEventIdAiGrouppingPost = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>,
+    TError,
+    { eventId: number; data: BodyType<EventGroupingRequest> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+  Awaited<ReturnType<typeof aIApiEventsEventIdAiGrouppingPost>>,
+  TError,
+  { eventId: number; data: BodyType<EventGroupingRequest> },
+  TContext
+> => {
+  const mutationOptions =
+    getAIApiEventsEventIdAiGrouppingPostMutationOptions(options)
 
-      const mutationOptions = getAIApiEventsEventIdAiGrouppingPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions)
+}
+/**
  * 이벤트에 속한 참여자 그룹핑합니다.
  * @summary 이벤트 참여자 그룹핑
  */
 export const apiEventsEventIdSetGroupPost = (
-    eventId: number,
-    eventGroupInfo: BodyType<EventGroupInfo>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  eventId: number,
+  eventGroupInfo: BodyType<EventGroupInfo>,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<SessionResponse[]>(
-      {url: `/api/events/${eventId}/set_group`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: eventGroupInfo, signal
+  return customInstance<SessionResponse[]>(
+    {
+      url: `/api/events/${eventId}/set_group`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: eventGroupInfo,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  )
+}
 
+export const getApiEventsEventIdSetGroupPostMutationOptions = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+    TError,
+    { eventId: number; data: BodyType<EventGroupInfo> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+  TError,
+  { eventId: number; data: BodyType<EventGroupInfo> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
-export const getApiEventsEventIdSetGroupPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>, TError,{eventId: number;data: BodyType<EventGroupInfo>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>, TError,{eventId: number;data: BodyType<EventGroupInfo>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+    { eventId: number; data: BodyType<EventGroupInfo> }
+  > = (props) => {
+    const { eventId, data } = props ?? {}
 
-      
+    return apiEventsEventIdSetGroupPost(eventId, data, requestOptions)
+  }
 
+  return { mutationFn, ...mutationOptions }
+}
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>, {eventId: number;data: BodyType<EventGroupInfo>}> = (props) => {
-          const {eventId,data} = props ?? {};
+export type ApiEventsEventIdSetGroupPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>
+>
+export type ApiEventsEventIdSetGroupPostMutationBody = BodyType<EventGroupInfo>
+export type ApiEventsEventIdSetGroupPostMutationError =
+  ErrorType<HTTPValidationError>
 
-          return  apiEventsEventIdSetGroupPost(eventId,data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApiEventsEventIdSetGroupPostMutationResult = NonNullable<Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>>
-    export type ApiEventsEventIdSetGroupPostMutationBody = BodyType<EventGroupInfo>
-    export type ApiEventsEventIdSetGroupPostMutationError = ErrorType<HTTPValidationError>
-
-    /**
+/**
  * @summary 이벤트 참여자 그룹핑
  */
-export const useApiEventsEventIdSetGroupPost = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>, TError,{eventId: number;data: BodyType<EventGroupInfo>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
-        TError,
-        {eventId: number;data: BodyType<EventGroupInfo>},
-        TContext
-      > => {
+export const useApiEventsEventIdSetGroupPost = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+    TError,
+    { eventId: number; data: BodyType<EventGroupInfo> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+  TError,
+  { eventId: number; data: BodyType<EventGroupInfo> },
+  TContext
+> => {
+  const mutationOptions =
+    getApiEventsEventIdSetGroupPostMutationOptions(options)
 
-      const mutationOptions = getApiEventsEventIdSetGroupPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
+  return useMutation(mutationOptions)
+}

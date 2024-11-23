@@ -3,7 +3,8 @@
     "@titicaca/eslint-config-triple",
     "@titicaca/eslint-config-triple/frontend",
     "@titicaca/eslint-config-triple/requiring-type-checking",
-    "@titicaca/eslint-config-triple/prettier"
+    "@titicaca/eslint-config-triple/prettier",
+    "plugin:storybook/recommended"
   ],
   "plugins": ["eslint-plugin-simple-import-sort", "unused-imports"],
   "root": true,
@@ -28,7 +29,13 @@
     "simple-import-sort/exports": "error",
     "no-unsafe-optional-chaining": 1,
     "unused-imports/no-unused-imports-ts": ["error"],
-    "comma-spacing": ["error", { "before": false, "after": true }],
+    "comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
     "import/no-named-as-default": "off",
     "camelcase": "off",
     "@typescript-eslint/no-explicit-any": "off"

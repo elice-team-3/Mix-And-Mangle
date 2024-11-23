@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "orval": "orval"
+    "orval": "orval",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -30,10 +32,19 @@
     "socket.io-client": "^4.8.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.3",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.2",
+    "@storybook/addon-essentials": "^8.4.5",
+    "@storybook/addon-interactions": "^8.4.5",
+    "@storybook/addon-onboarding": "^8.4.5",
+    "@storybook/blocks": "^8.4.5",
+    "@storybook/nextjs": "^8.4.5",
+    "@storybook/react": "^8.4.5",
+    "@storybook/test": "^8.4.5",
     "@titicaca/eslint-config-triple": "^5.1.1",
     "@types/axios": "^0.14.4",
     "@types/node": "^20",
@@ -41,15 +52,19 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
+    "chromatic": "^11.18.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "eslint-plugin-react-refresh": "^0.4.6",
     "eslint-plugin-simple-import-sort": "^12.0.0",
+    "eslint-plugin-storybook": "^0.11.1",
     "eslint-plugin-unused-imports": "^3.1.0",
     "orval": "^7.2.0",
     "postcss": "^8",
     "prettier-plugin-tailwindcss": "^0.6.5",
+    "storybook": "^8.4.5",
     "tailwindcss": "^3.4.1",
     "typescript": "5.2.2"
-  }
+  },
+  "packageManager": "pnpm@8.15.6+sha512.77b89e9be77a2b06ad8f403a19cae5e22976f61023f98ad323d5c30194958ebc02ee0a6ae5d13ee454f6134e4e8caf29a05f0b1a0e1d2b17bca6b6a1f1159f86"
 }
