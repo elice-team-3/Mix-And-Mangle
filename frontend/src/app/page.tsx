@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -7,12 +9,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Toggle } from '@/components/ui/toggle'
 
 export default function Home() {
   return (
     <div>
-      <Button variant="dark">다음</Button>
+      <Button>다음</Button>
       <Input />
+      <Toggle
+        onChange={(checked) => {
+          console.log(checked)
+        }}
+      >
+        dfsa
+      </Toggle>
       <Select>
         <SelectTrigger>
           <SelectValue placeholder="hello" />
