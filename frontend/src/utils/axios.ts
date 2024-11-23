@@ -3,7 +3,7 @@
 import Axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
 export const AXIOS_INSTANCE = Axios.create({
-  baseURL: '/proxy',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 }) // use your own URL here or environment variable
 
 // add a second `options` argument here if you want to pass extra options to each generated query

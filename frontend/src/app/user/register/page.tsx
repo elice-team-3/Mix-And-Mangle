@@ -16,8 +16,11 @@ import { apiUsersGetResponseItem } from '@/services/사용자/사용자.zod'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useApiUsersPost } from '@/services/사용자/사용자'
+import { useSocket } from '@/context/socket'
 
 const Page = () => {
+  const { handleConnect } = useSocket()
+
   const userForm = useForm<z.infer<typeof apiUsersGetResponseItem>>({
     resolver: zodResolver(apiUsersGetResponseItem),
     mode: 'onBlur',
@@ -26,7 +29,7 @@ const Page = () => {
       name: '',
       birth_date: '',
       job: '',
-      personality: null,
+      personality: '내향적',
       interest: [],
       hobby: [],
     },
@@ -131,7 +134,14 @@ const Page = () => {
               )
             }}
           />
-          <Button>생성</Button>
+          <Button
+            type="button"
+            onClick={() => {
+              handleConnect()
+            }}
+          >
+            생성
+          </Button>
         </form>
       </Form>
     </div>

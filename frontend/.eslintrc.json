@@ -30,6 +30,7 @@
     "unused-imports/no-unused-imports-ts": ["error"],
     "comma-spacing": ["error", { "before": false, "after": true }],
     "import/no-named-as-default": "off",
-    "camelcase": "off"
+    "camelcase": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
