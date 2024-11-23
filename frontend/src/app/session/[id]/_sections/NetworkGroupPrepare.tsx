@@ -7,6 +7,7 @@ import { blackSans } from '@/font/blackHanSans'
 import { cn } from '@/lib/utils'
 import { useApiSessionsEventIdGroupGetSuspense } from '@/services/네트워크-세션/네트워크-세션'
 import GroupList from '@/components/ui/GroupList'
+import { useUserStore } from '@/store/user'
 
 interface NetworkGroupPrepareProps {
   event: EventResponse
@@ -18,6 +19,8 @@ const NetworkGroupPrepare = ({ event }: NetworkGroupPrepareProps) => {
       enabled: false,
     },
   })
+
+  const { isMaster } = useUserStore()
 
   const handleNext = () => {
     nextQuery.refetch()
@@ -45,16 +48,18 @@ const NetworkGroupPrepare = ({ event }: NetworkGroupPrepareProps) => {
         }
         teamCount={teamCount}
       />
-      <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
-        <Button
-          type="button"
-          onClick={() => {
-            handleNext()
-          }}
-        >
-          다음
-        </Button>
-      </div>
+      {isMaster && (
+        <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
+          <Button
+            type="button"
+            onClick={() => {
+              handleNext()
+            }}
+          >
+            다음
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

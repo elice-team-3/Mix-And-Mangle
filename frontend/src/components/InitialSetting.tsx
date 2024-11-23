@@ -13,9 +13,10 @@ import { UserResponse } from '@/services/api.schemas'
 
 const InitialSetting = () => {
   const { toast } = useToast()
-  const { setUser } = useUserStore()
+  const { setUser, setIsMaster } = useUserStore()
   useEffect(() => {
     setUser(getLocalStorage('user') as UserResponse)
+    setIsMaster(getLocalStorage('isMaster') === 'true')
 
     AXIOS_INSTANCE.interceptors.response.use(
       (response) => {

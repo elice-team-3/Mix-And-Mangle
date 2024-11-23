@@ -147,7 +147,7 @@ const UserForm = () => {
     if (data) {
       setUser(data)
       setLocalStorage('user', data)
-      router.push('/user/complete')
+      router.push('/user/generate')
     }
   }
 

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useApiEventEventIdStartGet } from '@/services/소켓/소켓'
 import { blackSans } from '@/font/blackHanSans'
 import { cn } from '@/lib/utils'
+import { useUserStore } from '@/store/user'
 
 import ChatBubble from './_components/chat-bubble'
 
@@ -19,6 +20,8 @@ const Wait = ({ event }: WaitProps) => {
       enabled: false,
     },
   })
+
+  const { isMaster } = useUserStore()
 
   const handleNext = () => {
     nextQuery.refetch()
@@ -41,16 +44,19 @@ const Wait = ({ event }: WaitProps) => {
         환영합니다!
         <br /> 시작 전까지 조금만 기다려주세요.
       </ChatBubble>
-      <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
-        <Button
-          type="button"
-          onClick={() => {
-            handleNext()
-          }}
-        >
-          다음
-        </Button>
-      </div>
+
+      {isMaster && (
+        <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
+          <Button
+            type="button"
+            onClick={() => {
+              handleNext()
+            }}
+          >
+            다음
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

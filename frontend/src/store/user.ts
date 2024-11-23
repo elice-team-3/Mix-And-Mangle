@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
 import { UserResponse } from '@/services/api.schemas'
+import { setLocalStorage } from '@/utils/localStorage'
 
 interface UserStore {
   user: UserResponse | null
@@ -13,7 +14,10 @@ export const userStore = create<UserStore>((set) => ({
   user: null,
   isMaster: true,
   setUser: (user) => set({ user }),
-  setIsMaster: (isMaster) => set({ isMaster }),
+  setIsMaster: (isMaster) => {
+    setLocalStorage('isMaster', isMaster)
+    set({ isMaster })
+  },
 }))
 
 export const useUserStore = userStore

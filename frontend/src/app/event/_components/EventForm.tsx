@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
   Form,
@@ -67,7 +68,7 @@ const EventForm = ({ defaultValues, id, mode }: EventFormProps) => {
     defaultValues: defaultValues || {
       name: '',
       description: '',
-      status: '대기중',
+      status: 'wait',
       start_date: todayString,
       event_category: categories[0],
       end_date: todayString,
@@ -79,6 +80,8 @@ const EventForm = ({ defaultValues, id, mode }: EventFormProps) => {
   const createMutation = useApiEventsPost()
   const editMutation = useApiEventsEventIdPut()
 
+  const client = useQueryClient()
+
   const handleSubmit = () => {
     const data = eventForm.getValues()
 
@@ -87,6 +90,9 @@ const EventForm = ({ defaultValues, id, mode }: EventFormProps) => {
         { data },
         {
           onSuccess: () => {
+            client.invalidateQueries({
+              queryKey: ['api/events'],
+            })
             router.push('/event')
           },
         },

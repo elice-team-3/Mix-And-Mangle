@@ -12,6 +12,7 @@ import {
 import { useSocket } from '@/context/socket'
 import { useTimer } from '@/store/timer'
 import { Button } from '@/components/ui/button'
+import { useUserStore } from '@/store/user'
 
 const Networking = ({
   event,
@@ -48,6 +49,8 @@ const Networking = ({
       })
     }
   }, [])
+
+  const { isMaster } = useUserStore()
 
   const handleReset = useCallback(
     (socket = false) => {
@@ -108,7 +111,7 @@ const Networking = ({
           {time.seconds.toString().padStart(2, '0')}
         </p>
       </div>
-      <div className="flex justify-center gap-12">
+      <div className={cn('flex justify-center gap-12', !isMaster && 'hidden')}>
         <button
           className="flex rounded-12 bg-[#FF5829] px-20 py-10 text-white"
           onClick={() => {
@@ -170,16 +173,18 @@ const Networking = ({
           초기화
         </button>
       </div>
-      <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
-        <Button
-          type="button"
-          onClick={() => {
-            handleNext()
-          }}
-        >
-          다음
-        </Button>
-      </div>
+      {isMaster && (
+        <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
+          <Button
+            type="button"
+            onClick={() => {
+              handleNext()
+            }}
+          >
+            다음
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

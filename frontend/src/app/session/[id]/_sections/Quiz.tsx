@@ -7,6 +7,7 @@ import { useApiQuizGetSuspense } from '@/services/이벤트-퀴즈/이벤트-퀴
 import { cn } from '@/lib/utils'
 import { useApiEventEventIdNetworkingGroupPrepareGet } from '@/services/소켓/소켓'
 import { blackSans } from '@/font/blackHanSans'
+import { useUserStore } from '@/store/user'
 
 import QuizBlock from './_components/QuizBlock'
 import ChatBubble from './_components/chat-bubble'
@@ -17,6 +18,7 @@ const Quiz = ({ event }: { event: EventResponse }) => {
   const quizQuery = useApiQuizGetSuspense({
     event_id: event.event_id,
   })
+  const { isMaster } = useUserStore()
   const [currentQuiz, setCurrentQuiz] = useState(quizQuery.data[0])
   const [quizIndex, setQuizIndex] = useState(0)
   const [isQuizEnd, setIsQuizEnd] = useState(false)
@@ -95,7 +97,7 @@ const Quiz = ({ event }: { event: EventResponse }) => {
         </div>
       )}
 
-      {isQuizEnd && (
+      {isMaster && isQuizEnd && (
         <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
           <Button
             type="button"

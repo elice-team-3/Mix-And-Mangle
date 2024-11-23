@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useApiEventEventIdTopicGenerateGet } from '@/services/소켓/소켓'
 import { blackSans } from '@/font/blackHanSans'
 import { cn } from '@/lib/utils'
+import { useUserStore } from '@/store/user'
 
 import ChatBubble from './_components/chat-bubble'
 
@@ -19,6 +20,8 @@ const NetworkPrepare = ({ event }: NetworkPrepareProps) => {
       enabled: false,
     },
   })
+
+  const { isMaster } = useUserStore()
 
   const handleNext = () => {
     topicQuery.refetch()
@@ -41,17 +44,19 @@ const NetworkPrepare = ({ event }: NetworkPrepareProps) => {
         </strong>
         의견을 나눠보세요. 준비 되셨나요?
       </ChatBubble>
-      <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
-        <Button
-          type="button"
-          onClick={() => {
-            handleNext()
-          }}
-          disabled={topicQuery.isFetching}
-        >
-          다음
-        </Button>
-      </div>
+      {isMaster && (
+        <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
+          <Button
+            type="button"
+            onClick={() => {
+              handleNext()
+            }}
+            disabled={topicQuery.isFetching}
+          >
+            다음
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

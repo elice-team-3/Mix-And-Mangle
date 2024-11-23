@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button'
 import { useApiEventEventIdStartQuizGet } from '@/services/소켓/소켓'
 import { cn } from '@/lib/utils'
 import { blackSans } from '@/font/blackHanSans'
+import { useUserStore } from '@/store/user'
 
 import ChatBubble from './_components/chat-bubble'
 
 const EventStart = ({ event }: { event: EventResponse }) => {
+  const { isMaster } = useUserStore()
   const [message, setMessage] = useState(
     <motion.div key="mention-0" initial={{ scale: 0 }} animate={{ scale: 1 }}>
       💬 기다려 주셔서 감사합니다.
@@ -77,16 +79,18 @@ const EventStart = ({ event }: { event: EventResponse }) => {
         alt=""
       />
       <ChatBubble>{message}</ChatBubble>
-      <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
-        <Button
-          type="button"
-          onClick={() => {
-            handleNext()
-          }}
-        >
-          다음
-        </Button>
-      </div>
+      {isMaster && (
+        <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
+          <Button
+            type="button"
+            onClick={() => {
+              handleNext()
+            }}
+          >
+            다음
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

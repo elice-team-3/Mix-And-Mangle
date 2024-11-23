@@ -1,39 +1,50 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Toggle } from '@/components/ui/toggle'
+import { useUserStore } from '@/store/user'
 
 export default function Home() {
+  const { setIsMaster, user } = useUserStore()
+
+  const router = useRouter()
+
+  const handleClickParticipant = () => {
+    setIsMaster(false)
+
+    if (!user) {
+      router.push('/user/register')
+    } else {
+      router.push('/event')
+    }
+  }
+
+  const handleClickMaster = () => {
+    setIsMaster(true)
+
+    router.push('/event')
+  }
+
   return (
-    <div>
-      <Button>다음</Button>
-      <Input />
-      <Toggle
-        onChange={(checked) => {
-          console.log(checked)
-        }}
-      >
-        dfsa
-      </Toggle>
-      <Select>
-        <SelectTrigger>
-          <SelectValue placeholder="hello" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="1">Item 1</SelectItem>
-          <SelectItem value="2">Item 2</SelectItem>
-          <SelectItem value="3">Item 3</SelectItem>
-          <SelectItem value="4">Item 4</SelectItem>
-        </SelectContent>
-      </Select>
+    <div className="flex h-full flex-col justify-center">
+      <div className="fixed left-0 top-0 flex h-full w-full flex-col items-center bg-gradient-to-t from-[#BED1FF] to-white" />
+      <div className="relative">
+        <p className="mb-40 text-22 font-semibold">
+          안녕하세요!
+          <br /> 사용자 유형을 선택해주세요.
+        </p>
+        <Button
+          variant="secondary"
+          className="mb-12"
+          onClick={handleClickParticipant}
+        >
+          참가자
+        </Button>
+        <Button variant="secondary" onClick={handleClickMaster}>
+          주최자
+        </Button>
+      </div>
     </div>
   )
 }
