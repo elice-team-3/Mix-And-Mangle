@@ -77,6 +77,10 @@ class User(TimestampAndSoftDeleteBase):
         "Session", back_populates="user", lazy="joined"
     )
 
+    user_answers: Mapped[Any] = relationship(
+        "UserAnswer", back_populates="user", lazy="joined"
+    )
+
 
 class Event(TimestampAndSoftDeleteBase):
     __tablename__ = "event"
@@ -95,6 +99,9 @@ class Event(TimestampAndSoftDeleteBase):
     sessions: Mapped[Any] = relationship(
         "Session", back_populates="event", lazy="joined"
     )
+    quizzes: Mapped[Any] = relationship(
+        "Quiz", back_populates="event", lazy="joined"
+    )
 
 
 class Session(TimestampAndSoftDeleteBase):
@@ -108,8 +115,37 @@ class Session(TimestampAndSoftDeleteBase):
 
     # Relationship
     user: Mapped[User] = relationship(
-        "User", back_populates="sessions", lazy="joined"
+        "User", back_populates="sessions", lazy="joined", uselist=False
     )
     event: Mapped[Event] = relationship(
-        "Event", back_populates="sessions", lazy="joined"
+        "Event", back_populates="sessions", lazy="joined", uselist=False
+    )
+
+
+class Quiz(TimestampBase):
+    __tablename__ = "quiz"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    event_id: Mapped[int] = mapped_column(ForeignKey("event.id"))
+    question: Mapped[str] = mapped_column(nullable=False)
+    answer: Mapped[str] = mapped_column(nullable=False)
+    options: Mapped[list] = mapped_column(JSON, nullable=False)
+
+    # Relationship
+    event: Mapped[Event] = relationship(
+        "Event", back_populates="quizzes", lazy="joined", uselist=False
+    )
+
+
+class UserAnswer(TimestampBase):
+    __tablename__ = "user_answer"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("user.user_id"))
+    quiz_id: Mapped[int] = mapped_column(ForeignKey("quiz.id"))
+    answer: Mapped[str] = mapped_column(nullable=False)
+
+    # Relationship
+    user: Mapped[User] = relationship(
+        "User", back_populates="user_answers", lazy="joined"
     )

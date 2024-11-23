@@ -27,12 +27,16 @@ class EliceClient:
             "Authorization": f"Bearer {self.token}"
         }
         async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                url,
-                json=payload,
-                headers=headers,
-                timeout=60
-            )
+            retry_cnt = 0
+            while retry_cnt < 3:
+                resp = await client.post(
+                    url,
+                    json=payload,
+                    headers=headers,
+                    timeout=60
+                )
+                if resp.status_code == 200:
+                    break
 
         resp = resp.json()
         content = resp["choices"][0]["message"]["content"]

@@ -13,7 +13,9 @@ from src.client.elice_ai_client import get_elice_client
 from src.db.model import Event, User, Session
 from src.db.session import get_session
 
-router = APIRouter()
+router = APIRouter(
+    tags=["이벤트"]
+)
 
 
 @router.post(
@@ -23,7 +25,6 @@ router = APIRouter()
     status_code=201,
     response_model=EventResponse,
     response_description="Created",
-    tags=["이벤트"]
 )
 async def _(
         event: EventCreateRequest,
@@ -63,7 +64,6 @@ async def _(
     status_code=200,
     response_model=EventResponse,
     response_description="Ok",
-    tags=["이벤트"]
 )
 async def _(
         event_id: int,
@@ -99,7 +99,6 @@ async def _(
     status_code=200,
     response_model=list[EventResponse],
     response_description="Ok",
-    tags=["이벤트"]
 )
 async def _(
         db: AsyncSession = Depends(get_session)
@@ -133,7 +132,6 @@ async def _(
     status_code=200,
     response_model=EventResponse,
     response_description="Ok",
-    tags=["이벤트"]
 )
 async def _(
         event_id: int,
@@ -177,7 +175,6 @@ async def _(
     status_code=204,
     description="이벤트를 삭제합니다.",
     response_description="Deleted",
-    tags=["이벤트"]
 )
 async def _(
         event_id: int,
@@ -205,7 +202,6 @@ async def _(
     description="이벤트에 속한 참여자를 AI로 그룹핑합니다.",
     response_model=dict[str, dict],
     response_description="Ok",
-    tags=["이벤트"]
 )
 async def _(
         event_id: int,
@@ -305,3 +301,38 @@ async def _(
         )
         for session in sessions
     ]
+
+@router.get(
+    "/events/{event_id}/ai-quiz",
+    status_code=200,
+    name="이벤트 퀴즈 AI 생성",
+    description="이벤트에 관련된 퀴즈를 AI를 통해 생성합니다.",
+    response_model=dict,
+)
+async def _(
+    event_id: int,
+    db: AsyncSession = Depends(get_session),
+    elice_client=Depends(get_elice_client)
+):
+    event = await db.scalars(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    event = event.first()
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    message = [
+        {
+            "role": "user",
+            "content": f"이벤트 {event.name}에 대한 퀴즈를 생성해줘"
+        }
+    ]
+    resp = await elice_client.helpy_chat(message)
+    print(resp)
+    matches = re.findall(r'(\{[^}]*\})', resp)
+    print(matches[0])
+    quiz = json.loads(matches[0])
+
+    return quiz

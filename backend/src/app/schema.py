@@ -1,6 +1,9 @@
 from datetime import datetime, date
 
+from fastapi.params import Query
 from pydantic import BaseModel, Field, field_validator
+from pydantic.dataclasses import dataclass
+
 from src.util.enum import PERSONALITY, EVENTSTATUS, GROUPINGOPTION
 
 
@@ -109,8 +112,10 @@ class EventGroupingRequest(BaseModel):
     personality: GROUPINGOPTION | None = Field(GROUPINGOPTION.RANDOM, description="성격")
     interest: GROUPINGOPTION | None = Field(GROUPINGOPTION.RANDOM, description="관심사")
 
+
 class EventGroupInfo(BaseModel):
     group_info: dict[str, int] = Field(..., description="조 편성 목록 {'user_id' : int}")
+
 
 ##################
 # Session Schema #
@@ -129,3 +134,27 @@ class SessionResponse(BaseModel):
     created_at: str = Field(..., description="생성일")
     updated_at: str = Field(..., description="수정일")
     deleted_at: str | None = Field(None, description="삭제일")
+
+
+################
+#  Quiz Schema #
+################
+
+class QuizCreateRequest(BaseModel):
+    event_id: int = Field(..., description="이벤트 아이디")
+    question: str = Field(..., description="문제")
+    answer: str = Field(..., description="정답")
+    options: list[str] = Field(..., description="선택지")
+
+
+@dataclass
+class QuizListRequest:
+    event_id: int | None = Query(default=None, description="이벤트 아이디")
+
+
+class QuizResponse(BaseModel):
+    id: int = Field(..., description="퀴즈 아이디")
+    event_id: int = Field(..., description="이벤트 아이디")
+    question: str = Field(..., description="문제")
+    answer: str = Field(..., description="정답")
+    options: list[str] = Field(..., description="선택지")
