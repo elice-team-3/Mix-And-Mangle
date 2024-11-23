@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useRouter } from 'next/navigation'
 
 import {
   Form,
@@ -113,6 +114,7 @@ const INTERESTS = [
 ]
 const UserForm = () => {
   const [step, setStep] = useState<'info' | 'interest'>('info')
+  const router = useRouter()
   const { setUser } = useUserStore()
 
   const userForm = useForm<z.infer<typeof apiUsersGetResponseItem>>({
@@ -145,6 +147,7 @@ const UserForm = () => {
     if (data) {
       setUser(data)
       setLocalStorage('user', data)
+      router.push('/user/complete')
     }
   }
 
@@ -159,9 +162,19 @@ const UserForm = () => {
     }
   }
 
+  const year = userForm.watch('birth_date').slice(0, 4)
+  const month = userForm.watch('birth_date').slice(4, 6)
+  const day = userForm.watch('birth_date').slice(6)
+
   const isInfoStepValid =
     userForm.watch('name') &&
     userForm.watch('birth_date').length === 8 &&
+    Number(year) >= 1900 &&
+    Number(year) <= new Date().getFullYear() &&
+    Number(month) <= 12 &&
+    Number(month) > 0 &&
+    Number(day) <= 31 &&
+    Number(day) > 0 &&
     userForm.watch('job') &&
     userForm.watch('personality')
 
