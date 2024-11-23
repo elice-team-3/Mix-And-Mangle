@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { EventGroupInfoGroupInfo, QuizSchema } from '@/services/api.schemas'
+import { QuizSchema } from '@/services/api.schemas'
 
 interface EventFunnelStore {
   teamCount: number
@@ -15,8 +15,18 @@ interface EventFunnelStore {
   setPersonality: (personality: boolean) => void
   interest: boolean
   setInterest: (interest: boolean) => void
-  matched: Record<string, EventGroupInfoGroupInfo>
-  setMatched: (matched: Record<string, EventGroupInfoGroupInfo>) => void
+  matched: Array<{
+    user_id: number
+    group_id: number
+    user_name: string
+  }>
+  setMatched: (
+    matched: Array<{
+      user_id: number
+      group_id: number
+      user_name: string
+    }>,
+  ) => void
 }
 
 export const eventFunnelStore = create<EventFunnelStore>((set) => ({
@@ -50,7 +60,7 @@ export const eventFunnelStore = create<EventFunnelStore>((set) => ({
   setInterest: (state) => {
     set(() => ({ interest: state }))
   },
-  matched: {},
+  matched: [],
   setMatched: (matched) => {
     set({ matched })
   },

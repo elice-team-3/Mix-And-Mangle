@@ -1,16 +1,19 @@
 import { create } from 'zustand'
 
 import { UserResponse } from '@/services/api.schemas'
-import { getLocalStorage } from '@/utils/localStorage'
 
 interface UserStore {
   user: UserResponse | null
+  isMaster: boolean
+  setIsMaster: (isMaster: boolean) => void
   setUser: (user: UserResponse) => void
 }
 
 export const userStore = create<UserStore>((set) => ({
-  user: getLocalStorage('user'),
+  user: null,
+  isMaster: true,
   setUser: (user) => set({ user }),
+  setIsMaster: (isMaster) => set({ isMaster }),
 }))
 
 export const useUserStore = userStore

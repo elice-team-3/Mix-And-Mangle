@@ -7,10 +7,16 @@ import { useEffect } from 'react'
 
 import { useToast } from '@/hooks/use-toast'
 import { AXIOS_INSTANCE } from '@/utils/axios'
+import { useUserStore } from '@/store/user'
+import { getLocalStorage } from '@/utils/localStorage'
+import { UserResponse } from '@/services/api.schemas'
 
 const InitialSetting = () => {
   const { toast } = useToast()
+  const { setUser } = useUserStore()
   useEffect(() => {
+    setUser(getLocalStorage('user') as UserResponse)
+
     AXIOS_INSTANCE.interceptors.response.use(
       (response) => {
         return response

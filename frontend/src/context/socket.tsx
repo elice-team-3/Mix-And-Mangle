@@ -5,11 +5,12 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
-  useLayoutEffect,
 } from 'react'
 import { io } from 'socket.io-client'
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL + '/api/static'
+const SOCKET_URL = 'wss://qkewybjsseagatzq.tunnel-pt.elice.io'
+
+console.log('SOCKET_URL', SOCKET_URL)
 
 export const socket = io(SOCKET_URL, {
   reconnectionDelay: 10000,
@@ -28,12 +29,6 @@ export const SocketContext = createContext<SocketContext>({
 })
 
 export const SocketProvider = ({ children }: PropsWithChildren) => {
-  useLayoutEffect(() => {
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
-
   const handleConnect = useCallback(() => {
     socket.connect()
   }, [])

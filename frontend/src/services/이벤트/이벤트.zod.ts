@@ -36,7 +36,7 @@ export const apiEventsGetResponse = zod.array(apiEventsGetResponseItem)
 export const apiEventsPostBody = zod.object({
   name: zod.string(),
   description: zod.string(),
-  status: zod.enum(['대기중', '진행중', '종료됨', '취소됨']).optional(),
+  status: zod.enum(['wait', 'ongoing', 'finished', 'cancel']).optional(),
   start_date: zod.string().datetime(),
   end_date: zod.string().datetime(),
   participant_count: zod.number().optional(),
@@ -79,7 +79,7 @@ export const apiEventsEventIdPutBody = zod.object({
   name: zod.string().or(zod.null()),
   description: zod.string().or(zod.null()),
   status: zod
-    .enum(['대기중', '진행중', '종료됨', '취소됨'])
+    .enum(['wait', 'ongoing', 'finished', 'cancel'])
     .or(zod.null())
     .optional(),
   start_date: zod.string().datetime().or(zod.null()),
@@ -127,9 +127,31 @@ export const aIApiEventsEventIdAiGrouppingPostBody = zod.object({
   interest: zod.enum(['랜덤', '유사성']).or(zod.null()).optional(),
 })
 
-export const aIApiEventsEventIdAiGrouppingPostResponse = zod.record(
-  zod.string(),
-  zod.object({}),
+export const aIApiEventsEventIdAiGrouppingPostResponse = zod.object({})
+
+/**
+ * 이벤트에 속한 참여자 그룹핑합니다.
+ * @summary 이벤트 참여자 그룹핑
+ */
+export const apiEventsEventIdSetGroupPostParams = zod.object({
+  event_id: zod.number(),
+})
+
+export const apiEventsEventIdSetGroupPostBody = zod.object({
+  group_info: zod.array(zod.object({})),
+})
+
+export const apiEventsEventIdSetGroupPostResponseItem = zod.object({
+  session_id: zod.number(),
+  user_id: zod.string(),
+  event_id: zod.number(),
+  group_id: zod.number().or(zod.null()).optional(),
+  created_at: zod.string(),
+  updated_at: zod.string().or(zod.null()).optional(),
+  deleted_at: zod.string().or(zod.null()).optional(),
+})
+export const apiEventsEventIdSetGroupPostResponse = zod.array(
+  apiEventsEventIdSetGroupPostResponseItem,
 )
 
 /**

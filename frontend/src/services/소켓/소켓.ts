@@ -8,6 +8,7 @@ Mix&Mingle API Server
  * OpenAPI spec version: 0.6.0
  */
 import {
+  useMutation,
   useQuery,
   useSuspenseQuery
 } from '@tanstack/react-query'
@@ -15,14 +16,18 @@ import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
   UseSuspenseQueryOptions,
   UseSuspenseQueryResult
 } from '@tanstack/react-query'
+
 import type {
   HTTPValidationError
 } from '../api.schemas'
@@ -38,19 +43,19 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
  */
 export const apiStaticGet = (
     
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
       
       
       return customInstance<unknown>(
-      {url: `/api/static`, method: 'GET', signal
+      {url: '/api/static', method: 'GET', signal
     },
       options);
     }
   
 
 export const getApiStaticGetQueryKey = () => {
-    return [`/api/static`] as const;
+    return ['/api/static'] as const;
     }
 
     
@@ -82,7 +87,7 @@ export function useApiStaticGet<TData = Awaited<ReturnType<typeof apiStaticGet>>
           Awaited<ReturnType<typeof apiStaticGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -92,7 +97,7 @@ export function useApiStaticGet<TData = Awaited<ReturnType<typeof apiStaticGet>>
           Awaited<ReturnType<typeof apiStaticGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -175,11 +180,14 @@ export function useApiStaticGetSuspense<TData = Awaited<ReturnType<typeof apiSta
 
 
 /**
+ * 이벤트를 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'event.start' event를 발생시킵니다.
  * @summary 이벤트 시작
  */
 export const apiEventEventIdStartGet = (
     eventId: number,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
       
       
@@ -223,7 +231,7 @@ export function useApiEventEventIdStartGet<TData = Awaited<ReturnType<typeof api
           Awaited<ReturnType<typeof apiEventEventIdStartGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -233,7 +241,7 @@ export function useApiEventEventIdStartGet<TData = Awaited<ReturnType<typeof api
           Awaited<ReturnType<typeof apiEventEventIdStartGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -250,7 +258,7 @@ export function useApiEventEventIdStartGet<TData = Awaited<ReturnType<typeof api
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdStartGetQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdStartGetQueryOptions(eventId, options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -304,7 +312,7 @@ export function useApiEventEventIdStartGetSuspense<TData = Awaited<ReturnType<ty
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdStartGetSuspenseQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdStartGetSuspenseQueryOptions(eventId, options)
 
   const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -316,11 +324,14 @@ export function useApiEventEventIdStartGetSuspense<TData = Awaited<ReturnType<ty
 
 
 /**
+ * 퀴즈를 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'quiz.start' event를 발생시킵니다.
  * @summary 퀴즈 시작
  */
 export const apiEventEventIdStartQuizGet = (
     eventId: number,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
       
       
@@ -364,7 +375,7 @@ export function useApiEventEventIdStartQuizGet<TData = Awaited<ReturnType<typeof
           Awaited<ReturnType<typeof apiEventEventIdStartQuizGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -374,7 +385,7 @@ export function useApiEventEventIdStartQuizGet<TData = Awaited<ReturnType<typeof
           Awaited<ReturnType<typeof apiEventEventIdStartQuizGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -391,7 +402,7 @@ export function useApiEventEventIdStartQuizGet<TData = Awaited<ReturnType<typeof
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdStartQuizGetQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdStartQuizGetQueryOptions(eventId, options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -445,7 +456,295 @@ export function useApiEventEventIdStartQuizGetSuspense<TData = Awaited<ReturnTyp
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdStartQuizGetSuspenseQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdStartQuizGetSuspenseQueryOptions(eventId, options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * 네트워킹을 준비하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.prepare' event를 발생시킵니다.
+ * @summary 네트워킹 준비
+ */
+export const apiEventEventIdNetworkingPrepareGet = (
+    eventId: number,
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown>(
+      {url: `/api/event/${eventId}/networking-prepare`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getApiEventEventIdNetworkingPrepareGetQueryKey = (eventId: number,) => {
+    return [`/api/event/${eventId}/networking-prepare`] as const;
+    }
+
+    
+export const getApiEventEventIdNetworkingPrepareGetQueryOptions = <TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiEventEventIdNetworkingPrepareGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>> = ({ signal }) => apiEventEventIdNetworkingPrepareGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(eventId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventEventIdNetworkingPrepareGetQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>>
+export type ApiEventEventIdNetworkingPrepareGetQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiEventEventIdNetworkingPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>,
+          TError,
+          TData
+        >, 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>,
+          TError,
+          TData
+        >, 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 네트워킹 준비
+ */
+
+export function useApiEventEventIdNetworkingPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiEventEventIdNetworkingPrepareGetQueryOptions(eventId, options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getApiEventEventIdNetworkingPrepareGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiEventEventIdNetworkingPrepareGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>> = ({ signal }) => apiEventEventIdNetworkingPrepareGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventEventIdNetworkingPrepareGetSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>>
+export type ApiEventEventIdNetworkingPrepareGetSuspenseQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiEventEventIdNetworkingPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 네트워킹 준비
+ */
+
+export function useApiEventEventIdNetworkingPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiEventEventIdNetworkingPrepareGetSuspenseQueryOptions(eventId, options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * 네트워킹 그룹을 준비하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.group.prepare' event를 발생시킵니다.
+ * @summary 네트워킹 그룹 준비
+ */
+export const apiEventEventIdNetworkingGroupPrepareGet = (
+    eventId: number,
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown>(
+      {url: `/api/event/${eventId}/networking-group-prepare`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getApiEventEventIdNetworkingGroupPrepareGetQueryKey = (eventId: number,) => {
+    return [`/api/event/${eventId}/networking-group-prepare`] as const;
+    }
+
+    
+export const getApiEventEventIdNetworkingGroupPrepareGetQueryOptions = <TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiEventEventIdNetworkingGroupPrepareGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>> = ({ signal }) => apiEventEventIdNetworkingGroupPrepareGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(eventId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventEventIdNetworkingGroupPrepareGetQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>>
+export type ApiEventEventIdNetworkingGroupPrepareGetQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiEventEventIdNetworkingGroupPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>,
+          TError,
+          TData
+        >, 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingGroupPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>,
+          TError,
+          TData
+        >, 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingGroupPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 네트워킹 그룹 준비
+ */
+
+export function useApiEventEventIdNetworkingGroupPrepareGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiEventEventIdNetworkingGroupPrepareGetQueryOptions(eventId, options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getApiEventEventIdNetworkingGroupPrepareGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiEventEventIdNetworkingGroupPrepareGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>> = ({ signal }) => apiEventEventIdNetworkingGroupPrepareGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventEventIdNetworkingGroupPrepareGetSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>>
+export type ApiEventEventIdNetworkingGroupPrepareGetSuspenseQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiEventEventIdNetworkingGroupPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingGroupPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingGroupPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 네트워킹 그룹 준비
+ */
+
+export function useApiEventEventIdNetworkingGroupPrepareGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingGroupPrepareGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiEventEventIdNetworkingGroupPrepareGetSuspenseQueryOptions(eventId, options)
 
   const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -458,11 +757,13 @@ export function useApiEventEventIdStartQuizGetSuspense<TData = Awaited<ReturnTyp
 
 /**
  * 네트워킹을 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.start' event를 발생시킵니다.
  * @summary 네트워킹 시작
  */
 export const apiEventEventIdStartNetworkingGet = (
     eventId: number,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
       
       
@@ -506,7 +807,7 @@ export function useApiEventEventIdStartNetworkingGet<TData = Awaited<ReturnType<
           Awaited<ReturnType<typeof apiEventEventIdStartNetworkingGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -516,7 +817,7 @@ export function useApiEventEventIdStartNetworkingGet<TData = Awaited<ReturnType<
           Awaited<ReturnType<typeof apiEventEventIdStartNetworkingGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -533,7 +834,7 @@ export function useApiEventEventIdStartNetworkingGet<TData = Awaited<ReturnType<
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdStartNetworkingGetQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdStartNetworkingGetQueryOptions(eventId, options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -587,7 +888,7 @@ export function useApiEventEventIdStartNetworkingGetSuspense<TData = Awaited<Ret
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdStartNetworkingGetSuspenseQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdStartNetworkingGetSuspenseQueryOptions(eventId, options)
 
   const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -604,7 +905,7 @@ export function useApiEventEventIdStartNetworkingGetSuspense<TData = Awaited<Ret
  */
 export const apiEventEventIdTopicGenerateGet = (
     eventId: number,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
       
       
@@ -648,7 +949,7 @@ export function useApiEventEventIdTopicGenerateGet<TData = Awaited<ReturnType<ty
           Awaited<ReturnType<typeof apiEventEventIdTopicGenerateGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -658,7 +959,7 @@ export function useApiEventEventIdTopicGenerateGet<TData = Awaited<ReturnType<ty
           Awaited<ReturnType<typeof apiEventEventIdTopicGenerateGet>>,
           TError,
           TData
-        > , 'initialData'
+        >, 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -675,7 +976,7 @@ export function useApiEventEventIdTopicGenerateGet<TData = Awaited<ReturnType<ty
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdTopicGenerateGetQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdTopicGenerateGetQueryOptions(eventId, options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -729,7 +1030,210 @@ export function useApiEventEventIdTopicGenerateGetSuspense<TData = Awaited<Retur
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getApiEventEventIdTopicGenerateGetSuspenseQueryOptions(eventId,options)
+  const queryOptions = getApiEventEventIdTopicGenerateGetSuspenseQueryOptions(eventId, options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * 타이머를 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'timer.start', 'timer.stop', timer.reset event를 발생시킵니다.
+ * @summary 타이머 시작
+ */
+export const apiEventEventIdTimerActionPut = (
+    eventId: number,
+    action: string,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<unknown>(
+      {url: `/api/event/${eventId}/timer/${action}`, method: 'PUT'
+    },
+      options);
+    }
+  
+
+
+export const getApiEventEventIdTimerActionPutMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventEventIdTimerActionPut>>, TError, {eventId: number;action: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof apiEventEventIdTimerActionPut>>, TError, {eventId: number;action: string}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiEventEventIdTimerActionPut>>, {eventId: number;action: string}> = (props) => {
+          const {eventId, action} = props ?? {};
+
+          return  apiEventEventIdTimerActionPut(eventId, action, requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ApiEventEventIdTimerActionPutMutationResult = NonNullable<Awaited<ReturnType<typeof apiEventEventIdTimerActionPut>>>
+    
+    export type ApiEventEventIdTimerActionPutMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary 타이머 시작
+ */
+export const useApiEventEventIdTimerActionPut = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiEventEventIdTimerActionPut>>, TError, {eventId: number;action: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof apiEventEventIdTimerActionPut>>,
+        TError,
+        {eventId: number;action: string},
+        TContext
+      > => {
+
+      const mutationOptions = getApiEventEventIdTimerActionPutMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * 네트워킹을 종료하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.end' event를 발생시킵니다.
+ * @summary 네트워킹 종료
+ */
+export const apiEventEventIdNetworkingEndGet = (
+    eventId: number,
+ options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown>(
+      {url: `/api/event/${eventId}/networking-end`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getApiEventEventIdNetworkingEndGetQueryKey = (eventId: number,) => {
+    return [`/api/event/${eventId}/networking-end`] as const;
+    }
+
+    
+export const getApiEventEventIdNetworkingEndGetQueryOptions = <TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiEventEventIdNetworkingEndGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>> = ({ signal }) => apiEventEventIdNetworkingEndGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(eventId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventEventIdNetworkingEndGetQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>>
+export type ApiEventEventIdNetworkingEndGetQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiEventEventIdNetworkingEndGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>,
+          TError,
+          TData
+        >, 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingEndGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>,
+          TError,
+          TData
+        >, 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingEndGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 네트워킹 종료
+ */
+
+export function useApiEventEventIdNetworkingEndGet<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiEventEventIdNetworkingEndGetQueryOptions(eventId, options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getApiEventEventIdNetworkingEndGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiEventEventIdNetworkingEndGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>> = ({ signal }) => apiEventEventIdNetworkingEndGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiEventEventIdNetworkingEndGetSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>>
+export type ApiEventEventIdNetworkingEndGetSuspenseQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiEventEventIdNetworkingEndGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingEndGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiEventEventIdNetworkingEndGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 네트워킹 종료
+ */
+
+export function useApiEventEventIdNetworkingEndGetSuspense<TData = Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiEventEventIdNetworkingEndGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiEventEventIdNetworkingEndGetSuspenseQueryOptions(eventId, options)
 
   const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 

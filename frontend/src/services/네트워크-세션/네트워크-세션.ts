@@ -31,6 +31,7 @@ import type {
   ApiSessionsGetParams,
   HTTPValidationError,
   SessionCreateRequest,
+  SessionGroupResponse,
   SessionResponse
 } from '../api.schemas'
 import { customInstance } from '../../utils/axios';
@@ -440,4 +441,145 @@ export const useApiSessionsSessionIdDelete = <TError = ErrorType<HTTPValidationE
 
       return useMutation(mutationOptions);
     }
+    /**
+ * 사용자의 그룹을 조회합니다.
+ * @summary 사용자의 그룹 조회
+ */
+export const apiSessionsEventIdGroupGet = (
+    eventId: number,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<SessionGroupResponse>(
+      {url: `/api/sessions/${eventId}/group`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getApiSessionsEventIdGroupGetQueryKey = (eventId: number,) => {
+    return [`/api/sessions/${eventId}/group`] as const;
+    }
+
     
+export const getApiSessionsEventIdGroupGetQueryOptions = <TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiSessionsEventIdGroupGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>> = ({ signal }) => apiSessionsEventIdGroupGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(eventId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiSessionsEventIdGroupGetQueryResult = NonNullable<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>>
+export type ApiSessionsEventIdGroupGetQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiSessionsEventIdGroupGet<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiSessionsEventIdGroupGet<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiSessionsEventIdGroupGet<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 사용자의 그룹 조회
+ */
+
+export function useApiSessionsEventIdGroupGet<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiSessionsEventIdGroupGetQueryOptions(eventId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getApiSessionsEventIdGroupGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiSessionsEventIdGroupGetQueryKey(eventId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>> = ({ signal }) => apiSessionsEventIdGroupGet(eventId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type ApiSessionsEventIdGroupGetSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>>
+export type ApiSessionsEventIdGroupGetSuspenseQueryError = ErrorType<HTTPValidationError>
+
+
+export function useApiSessionsEventIdGroupGetSuspense<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiSessionsEventIdGroupGetSuspense<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useApiSessionsEventIdGroupGetSuspense<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 사용자의 그룹 조회
+ */
+
+export function useApiSessionsEventIdGroupGetSuspense<TData = Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError = ErrorType<HTTPValidationError>>(
+ eventId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof apiSessionsEventIdGroupGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getApiSessionsEventIdGroupGetSuspenseQueryOptions(eventId,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

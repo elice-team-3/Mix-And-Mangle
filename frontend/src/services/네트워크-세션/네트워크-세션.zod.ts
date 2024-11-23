@@ -36,7 +36,7 @@ export const apiSessionsGetResponseItem = zod.object({
   "event_id": zod.number(),
   "group_id": zod.number().or(zod.null()).optional(),
   "created_at": zod.string(),
-  "updated_at": zod.string(),
+  "updated_at": zod.string().or(zod.null()).optional(),
   "deleted_at": zod.string().or(zod.null()).optional()
 })
 export const apiSessionsGetResponse = zod.array(apiSessionsGetResponseItem)
@@ -55,7 +55,7 @@ export const apiSessionsSessionIdGetResponse = zod.object({
   "event_id": zod.number(),
   "group_id": zod.number().or(zod.null()).optional(),
   "created_at": zod.string(),
-  "updated_at": zod.string(),
+  "updated_at": zod.string().or(zod.null()).optional(),
   "deleted_at": zod.string().or(zod.null()).optional()
 })
 
@@ -65,5 +65,20 @@ export const apiSessionsSessionIdGetResponse = zod.object({
  */
 export const apiSessionsSessionIdDeleteParams = zod.object({
   "session_id": zod.number()
+})
+
+/**
+ * 사용자의 그룹을 조회합니다.
+ * @summary 사용자의 그룹 조회
+ */
+export const apiSessionsEventIdGroupGetParams = zod.object({
+  "event_id": zod.number()
+})
+
+export const apiSessionsEventIdGroupGetResponse = zod.object({
+  "event_id": zod.number(),
+  "group_info": zod.array(zod.object({
+
+}))
 })
 

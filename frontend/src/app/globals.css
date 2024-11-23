@@ -1,3 +1,10 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import url('https://fonts.cdnfonts.com/css/digital-7-mono');
+
+.digital {
+  font-family: 'Digital-7 Mono', sans-serif;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -71,4 +78,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+body {
+  font-family: 'Pretendard', sans-serif;
 }

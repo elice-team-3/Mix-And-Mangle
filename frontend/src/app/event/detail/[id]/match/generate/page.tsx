@@ -4,9 +4,11 @@ import React, { useLayoutEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import AIGenerator from '@/components/ui/ai-generator'
-import { useAIApiEventsEventIdAiGrouppingPost } from '@/services/이벤트/이벤트'
+import {
+  useAIApiEventsEventIdAiGrouppingPost,
+  useApiEventsEventIdSetGroupPost,
+} from '@/services/이벤트/이벤트'
 import { useEventFunnelStore } from '@/store/event-funnel'
-import { EventGroupInfoGroupInfo } from '@/services/api.schemas'
 import {
   useApiQuizBulkPost,
   useApiQuizGetSuspense,
@@ -21,6 +23,7 @@ interface PageProps {
 const Page = (props: PageProps) => {
   const router = useRouter()
   const mutation = useAIApiEventsEventIdAiGrouppingPost()
+  const joinMutation = useApiEventsEventIdSetGroupPost()
   const quizMutation = useApiQuizBulkPost()
 
   const [isComplete, setIsComplete] = useState(false)
@@ -50,10 +53,22 @@ const Page = (props: PageProps) => {
           },
         },
         {
-          onSuccess: (data) => {
+          onSuccess: async (data) => {
             const result = data as {
-              group_info: Record<string, EventGroupInfoGroupInfo>
+              group_info: Array<{
+                user_id: number
+                group_id: number
+                user_name: string
+              }>
             }
+
+            await joinMutation.mutateAsync({
+              eventId: parseInt(props.params.id),
+              data: {
+                group_info: result.group_info,
+              },
+            })
+
             setMatched(result.group_info)
             if (newQuizs.length > 0) {
               quizMutation.mutate(
@@ -85,11 +100,11 @@ const Page = (props: PageProps) => {
   return (
     <AIGenerator
       step1="데이터를 분석하고 있어요."
-      step1Complete={mutation.isSuccess}
+      step1Complete
       step2="프로필을 매칭중이에요."
-      step2Complete={quizMutation.isSuccess}
+      step2Complete={mutation.isSuccess}
       step3="거의 다 됐어요!"
-      step3Complete={isComplete}
+      step3Complete={quizMutation.isSuccess}
       isComplete={isComplete}
       onComplete={() => {
         router.push('/event/detail/' + props.params.id + '/match/complete')

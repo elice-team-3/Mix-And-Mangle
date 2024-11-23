@@ -17,6 +17,9 @@ import {
 export const apiStaticGetResponse = zod.any()
 
 /**
+ * 이벤트를 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'event.start' event를 발생시킵니다.
  * @summary 이벤트 시작
  */
 export const apiEventEventIdStartGetParams = zod.object({
@@ -26,6 +29,9 @@ export const apiEventEventIdStartGetParams = zod.object({
 export const apiEventEventIdStartGetResponse = zod.any()
 
 /**
+ * 퀴즈를 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'quiz.start' event를 발생시킵니다.
  * @summary 퀴즈 시작
  */
 export const apiEventEventIdStartQuizGetParams = zod.object({
@@ -35,7 +41,33 @@ export const apiEventEventIdStartQuizGetParams = zod.object({
 export const apiEventEventIdStartQuizGetResponse = zod.any()
 
 /**
+ * 네트워킹을 준비하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.prepare' event를 발생시킵니다.
+ * @summary 네트워킹 준비
+ */
+export const apiEventEventIdNetworkingPrepareGetParams = zod.object({
+  "event_id": zod.number()
+})
+
+export const apiEventEventIdNetworkingPrepareGetResponse = zod.any()
+
+/**
+ * 네트워킹 그룹을 준비하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.group.prepare' event를 발생시킵니다.
+ * @summary 네트워킹 그룹 준비
+ */
+export const apiEventEventIdNetworkingGroupPrepareGetParams = zod.object({
+  "event_id": zod.number()
+})
+
+export const apiEventEventIdNetworkingGroupPrepareGetResponse = zod.any()
+
+/**
  * 네트워킹을 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.start' event를 발생시킵니다.
  * @summary 네트워킹 시작
  */
 export const apiEventEventIdStartNetworkingGetParams = zod.object({
@@ -53,4 +85,29 @@ export const apiEventEventIdTopicGenerateGetParams = zod.object({
 })
 
 export const apiEventEventIdTopicGenerateGetResponse = zod.any()
+
+/**
+ * 타이머를 시작하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'timer.start', 'timer.stop', timer.reset event를 발생시킵니다.
+ * @summary 타이머 시작
+ */
+export const apiEventEventIdTimerActionPutParams = zod.object({
+  "event_id": zod.number(),
+  "action": zod.string()
+})
+
+export const apiEventEventIdTimerActionPutResponse = zod.any()
+
+/**
+ * 네트워킹을 종료하는 메시지를 보냅니다.
+socket을 통해 event_id에 해당하는 room에
+'networking.end' event를 발생시킵니다.
+ * @summary 네트워킹 종료
+ */
+export const apiEventEventIdNetworkingEndGetParams = zod.object({
+  "event_id": zod.number()
+})
+
+export const apiEventEventIdNetworkingEndGetResponse = zod.any()
 

@@ -27,11 +27,13 @@ import type {
 import type {
   AIApiEventsEventIdAiGrouppingPost200,
   EventCreateRequest,
+  EventGroupInfo,
   EventGroupingRequest,
   EventResponse,
   EventUpdateRequest,
   HTTPValidationError,
   QuizBulkCreateSchema,
+  SessionResponse,
 } from '../api.schemas'
 import { customInstance } from '../../utils/axios'
 import type { ErrorType, BodyType } from '../../utils/axios'
@@ -872,7 +874,91 @@ export const useAIApiEventsEventIdAiGrouppingPost = <
 
   return useMutation(mutationOptions)
 }
+/**
+ * 이벤트에 속한 참여자 그룹핑합니다.
+ * @summary 이벤트 참여자 그룹핑
+ */
+export const apiEventsEventIdSetGroupPost = (
+  eventId: number,
+  eventGroupInfo: BodyType<EventGroupInfo>,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<SessionResponse[]>(
+    {
+      url: `/api/events/${eventId}/set_group`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: eventGroupInfo,
+      signal,
+    },
+    options,
+  )
+}
 
+export const getApiEventsEventIdSetGroupPostMutationOptions = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+    TError,
+    { eventId: number; data: BodyType<EventGroupInfo> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+  TError,
+  { eventId: number; data: BodyType<EventGroupInfo> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+    { eventId: number; data: BodyType<EventGroupInfo> }
+  > = (props) => {
+    const { eventId, data } = props ?? {}
+
+    return apiEventsEventIdSetGroupPost(eventId, data, requestOptions)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type ApiEventsEventIdSetGroupPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>
+>
+export type ApiEventsEventIdSetGroupPostMutationBody = BodyType<EventGroupInfo>
+export type ApiEventsEventIdSetGroupPostMutationError =
+  ErrorType<HTTPValidationError>
+
+/**
+ * @summary 이벤트 참여자 그룹핑
+ */
+export const useApiEventsEventIdSetGroupPost = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+    TError,
+    { eventId: number; data: BodyType<EventGroupInfo> },
+    TContext
+  >
+  request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
+  TError,
+  { eventId: number; data: BodyType<EventGroupInfo> },
+  TContext
+> => {
+  const mutationOptions =
+    getApiEventsEventIdSetGroupPostMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
 /**
  * 이벤트에 관련된 퀴즈를 AI를 통해 생성합니다.
  * @summary 이벤트 퀴즈 Ai 생성

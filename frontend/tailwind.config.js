@@ -58,6 +58,9 @@ const config = {
       lineHeight: px0_200,
       fontSize: px0_200,
     },
+    fontFamily: {
+      blackSans: ['Black_Han_Sans', 'sans-serif'],
+    },
     screens: {
       phone: {
         min: '0px',

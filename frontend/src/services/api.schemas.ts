@@ -8,367 +8,368 @@ Mix&Mingle API Server
  * OpenAPI spec version: 0.6.0
  */
 export type ApiSessionsGetParams = {
-  user_id?: string | null
-  event_id?: number | null
-  group_id?: number | null
-}
+user_id?: string | null;
+event_id?: number | null;
+group_id?: number | null;
+};
 
 export type ApiQuizGetParams = {
-  event_id?: number | null
-}
+event_id?: number | null;
+};
 
-export type AIApiEventsEventIdAiGrouppingPost200 = {
-  [key: string]: { [key: string]: unknown }
-}
+export type AIApiEventsEventIdAiGrouppingPost200 = { [key: string]: unknown };
 
-export type ValidationErrorLocItem = string | number
+export type ValidationErrorLocItem = string | number;
 
 export interface ValidationError {
-  loc: ValidationErrorLocItem[]
-  msg: string
-  type: string
+  loc: ValidationErrorLocItem[];
+  msg: string;
+  type: string;
 }
 
 /**
  * 성격
  */
-export type UserUpdateRequestPersonality = Personality | null
+export type UserUpdateRequestPersonality = Personality | null;
 
 /**
  * 사용자 이름
  */
-export type UserUpdateRequestName = string | null
+export type UserUpdateRequestName = string | null;
 
 /**
  * 직업
  */
-export type UserUpdateRequestJob = string | null
+export type UserUpdateRequestJob = string | null;
 
 /**
  * 관심사
  */
-export type UserUpdateRequestInterest = string[] | null
-
-/**
- * 취미
- */
-export type UserUpdateRequestHobby = string[] | null
+export type UserUpdateRequestInterest = string[] | null;
 
 /**
  * 생년월일
  */
-export type UserUpdateRequestBirthDate = string | null
+export type UserUpdateRequestBirthDate = string | null;
 
 export interface UserUpdateRequest {
   /** 생년월일 */
-  birth_date: UserUpdateRequestBirthDate
-  /** 취미 */
-  hobby?: UserUpdateRequestHobby
+  birth_date: UserUpdateRequestBirthDate;
   /** 관심사 */
-  interest?: UserUpdateRequestInterest
+  interest?: UserUpdateRequestInterest;
   /** 직업 */
-  job?: UserUpdateRequestJob
+  job?: UserUpdateRequestJob;
   /** 사용자 이름 */
-  name: UserUpdateRequestName
+  name: UserUpdateRequestName;
   /** 성격 */
-  personality?: UserUpdateRequestPersonality
+  personality?: UserUpdateRequestPersonality;
 }
 
 /**
  * 성격
  */
-export type UserResponsePersonality = Personality | null
+export type UserResponsePersonality = Personality | null;
 
 export interface UserResponse {
   /** 생년월일 */
-  birth_date: string
+  birth_date: string;
   /** 생성일 */
-  created_at: string
-  /** 취미 */
-  hobby?: string[]
+  created_at: string;
   /** 관심사 */
-  interest?: string[]
+  interest?: string[];
   /** 직업 */
-  job?: string
-  name: string
+  job?: string;
+  name: string;
   /** 성격 */
-  personality?: UserResponsePersonality
+  personality?: UserResponsePersonality;
   /** 수정일 */
-  updated_at: string
+  updated_at: string;
   /** 사용자 아이디 */
-  user_id: string
+  user_id: string;
 }
 
 /**
  * 성격
  */
-export type UserCreateRequestPersonality = Personality | null
+export type UserCreateRequestPersonality = Personality | null;
 
 export interface UserCreateRequest {
   /** 생년월일 */
-  birth_date: string
-  /** 취미 */
-  hobby?: string[]
+  birth_date: string;
   /** 관심사 */
-  interest?: string[]
+  interest?: string[];
   /** 직업 */
-  job?: string
+  job?: string;
   /** 사용자 이름 */
-  name: string
+  name: string;
   /** 성격 */
-  personality?: UserCreateRequestPersonality
+  personality?: UserCreateRequestPersonality;
   /** 사용자 아이디 */
-  user_id: string
+  user_id: string;
 }
+
+/**
+ * 수정일
+ */
+export type SessionResponseUpdatedAt = string | null;
 
 /**
  * 그룹 아이디
  */
-export type SessionResponseGroupId = number | null
+export type SessionResponseGroupId = number | null;
 
 /**
  * 삭제일
  */
-export type SessionResponseDeletedAt = string | null
+export type SessionResponseDeletedAt = string | null;
 
 export interface SessionResponse {
   /** 생성일 */
-  created_at: string
+  created_at: string;
   /** 삭제일 */
-  deleted_at?: SessionResponseDeletedAt
+  deleted_at?: SessionResponseDeletedAt;
   /** 이벤트 아이디 */
-  event_id: number
+  event_id: number;
   /** 그룹 아이디 */
-  group_id?: SessionResponseGroupId
+  group_id?: SessionResponseGroupId;
   /** 세션 아이디 */
-  session_id: number
+  session_id: number;
   /** 수정일 */
-  updated_at: string
+  updated_at?: SessionResponseUpdatedAt;
   /** 사용자 아이디 */
-  user_id: string
+  user_id: string;
+}
+
+export type SessionGroupResponseGroupInfoItem = { [key: string]: unknown };
+
+export interface SessionGroupResponse {
+  /** 이벤트 아이디 */
+  event_id: number;
+  /** 그룹 정보 */
+  group_info: SessionGroupResponseGroupInfoItem[];
 }
 
 export interface SessionCreateRequest {
   /** 이벤트 아이디 */
-  event_id: number
+  event_id: number;
   /** 사용자 아이디 */
-  user_id: string
+  user_id: string;
 }
 
 export interface QuizSchema {
   /** 정답 */
-  answer: string
+  answer: string;
   /** 선택지 */
-  options: string[]
+  options: string[];
   /** 문제 */
-  question: string
+  question: string;
 }
 
 export interface QuizResponse {
   /** 정답 */
-  answer: string
+  answer: string;
   /** 이벤트 아이디 */
-  event_id: number
+  event_id: number;
   /** 퀴즈 아이디 */
-  id: number
+  id: number;
   /** 선택지 */
-  options: string[]
+  options: string[];
   /** 문제 */
-  question: string
+  question: string;
 }
 
 export interface QuizCreateRequest {
   /** 정답 */
-  answer: string
+  answer: string;
   /** 이벤트 아이디 */
-  event_id: number
+  event_id: number;
   /** 선택지 */
-  options: string[]
+  options: string[];
   /** 문제 */
-  question: string
+  question: string;
 }
 
 export interface QuizBulkCreateSchema {
   /** 이벤트 아이디 */
-  event_id: number
+  event_id: number;
   /** 퀴즈 목록 */
-  quizzes: QuizSchema[]
+  quizzes: QuizSchema[];
 }
 
-export type Personality = (typeof Personality)[keyof typeof Personality]
+export type Personality = typeof Personality[keyof typeof Personality];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Personality = {
   내향적: '내향적',
   양면성: '양면성',
   외향적: '외향적',
-} as const
+} as const;
 
 export interface HTTPValidationError {
-  detail?: ValidationError[]
+  detail?: ValidationError[];
 }
 
-export type Groupingoption =
-  (typeof Groupingoption)[keyof typeof Groupingoption]
+export type Groupingoption = typeof Groupingoption[keyof typeof Groupingoption];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Groupingoption = {
   랜덤: '랜덤',
   유사성: '유사성',
-} as const
+} as const;
 
 /**
  * 이벤트 상태
  */
-export type EventUpdateRequestStatus = Eventstatus | null
+export type EventUpdateRequestStatus = Eventstatus | null;
 
 /**
  * 이벤트 시작일
  */
-export type EventUpdateRequestStartDate = string | null
+export type EventUpdateRequestStartDate = string | null;
 
 /**
  * 이벤트 이름
  */
-export type EventUpdateRequestName = string | null
+export type EventUpdateRequestName = string | null;
 
 /**
  * 이벤트 카테고리
  */
-export type EventUpdateRequestEventCategory = string | null
+export type EventUpdateRequestEventCategory = string | null;
 
 /**
  * 이벤트 종료일
  */
-export type EventUpdateRequestEndDate = string | null
+export type EventUpdateRequestEndDate = string | null;
 
 /**
  * 이벤트 설명
  */
-export type EventUpdateRequestDescription = string | null
+export type EventUpdateRequestDescription = string | null;
 
 /**
  * 추가 정보
  */
-export type EventUpdateRequestAdditionalInfo = string | null
+export type EventUpdateRequestAdditionalInfo = string | null;
 
 export interface EventUpdateRequest {
   /** 추가 정보 */
-  additional_info?: EventUpdateRequestAdditionalInfo
+  additional_info?: EventUpdateRequestAdditionalInfo;
   /** 이벤트 설명 */
-  description: EventUpdateRequestDescription
+  description: EventUpdateRequestDescription;
   /** 이벤트 종료일 */
-  end_date: EventUpdateRequestEndDate
+  end_date: EventUpdateRequestEndDate;
   /** 이벤트 카테고리 */
-  event_category: EventUpdateRequestEventCategory
+  event_category: EventUpdateRequestEventCategory;
   /** 이벤트 이름 */
-  name: EventUpdateRequestName
+  name: EventUpdateRequestName;
   /** 참가자 수 */
-  participant_count?: number
+  participant_count?: number;
   /** 이벤트 시작일 */
-  start_date: EventUpdateRequestStartDate
+  start_date: EventUpdateRequestStartDate;
   /** 이벤트 상태 */
-  status?: EventUpdateRequestStatus
+  status?: EventUpdateRequestStatus;
 }
 
 /**
  * 이벤트 카테고리
  */
-export type EventResponseEventCategory = string | null
+export type EventResponseEventCategory = string | null;
 
 /**
  * 삭제일
  */
-export type EventResponseDeletedAt = string | null
+export type EventResponseDeletedAt = string | null;
 
 export interface EventResponse {
   /** 추가 정보 */
-  additional_info?: string
+  additional_info?: string;
   /** 생성일 */
-  created_at: string
+  created_at: string;
   /** 삭제일 */
-  deleted_at?: EventResponseDeletedAt
+  deleted_at?: EventResponseDeletedAt;
   /** 이벤트 설명 */
-  description: string
+  description: string;
   /** 이벤트 종료일 */
-  end_date: string
+  end_date: string;
   /** 이벤트 카테고리 */
-  event_category: EventResponseEventCategory
+  event_category: EventResponseEventCategory;
   /** 이벤트 아이디 */
-  event_id: number
+  event_id: number;
   /** 이벤트 이름 */
-  name: string
+  name: string;
   /** 참가자 수 */
-  participant_count?: number
+  participant_count?: number;
   /** 이벤트 시작일 */
-  start_date: string
+  start_date: string;
   /** 이벤트 상태 */
-  status: string
+  status: string;
   /** 수정일 */
-  updated_at: string
+  updated_at: string;
 }
 
 /**
  * 성격
  */
-export type EventGroupingRequestPersonality = Groupingoption | null
+export type EventGroupingRequestPersonality = Groupingoption | null;
 
 /**
  * 직업
  */
-export type EventGroupingRequestJob = Groupingoption | null
+export type EventGroupingRequestJob = Groupingoption | null;
 
 /**
  * 관심사
  */
-export type EventGroupingRequestInterest = Groupingoption | null
+export type EventGroupingRequestInterest = Groupingoption | null;
 
 export interface EventGroupingRequest {
   /** 나눌 조의 수 */
-  count?: number
+  count?: number;
   /** 관심사 */
-  interest?: EventGroupingRequestInterest
+  interest?: EventGroupingRequestInterest;
   /** 직업 */
-  job?: EventGroupingRequestJob
+  job?: EventGroupingRequestJob;
   /** 성격 */
-  personality?: EventGroupingRequestPersonality
+  personality?: EventGroupingRequestPersonality;
 }
 
-/**
- * 조 편성 목록 {'user_id' : int}
- */
-export type EventGroupInfoGroupInfo = { [key: string]: number }
+export type EventGroupInfoGroupInfoItem = { [key: string]: unknown };
 
 export interface EventGroupInfo {
   /** 조 편성 목록 {'user_id' : int} */
-  group_info: EventGroupInfoGroupInfo
+  group_info: EventGroupInfoGroupInfoItem[];
 }
 
-export type Eventstatus = (typeof Eventstatus)[keyof typeof Eventstatus]
+export type Eventstatus = typeof Eventstatus[keyof typeof Eventstatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Eventstatus = {
-  대기중: '대기중',
-  진행중: '진행중',
-  종료됨: '종료됨',
-  취소됨: '취소됨',
-} as const
+  wait: 'wait',
+  ongoing: 'ongoing',
+  finished: 'finished',
+  cancel: 'cancel',
+} as const;
 
 export interface EventCreateRequest {
   /** 추가 정보 */
-  additional_info?: string
+  additional_info?: string;
   /** 이벤트 설명 */
-  description: string
+  description: string;
   /** 이벤트 종료일 */
-  end_date: string
+  end_date: string;
   /** 이벤트 카테고리 */
-  event_category: string
+  event_category: string;
   /** 이벤트 이름 */
-  name: string
+  name: string;
   /** 참가자 수 */
-  participant_count?: number
+  participant_count?: number;
   /** 이벤트 시작일 */
-  start_date: string
+  start_date: string;
   /** 이벤트 상태 */
-  status?: Eventstatus
+  status?: Eventstatus;
 }
+
