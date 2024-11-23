@@ -1,11 +1,11 @@
 import React from 'react'
 
-import EventForm from './_components/EventForm'
+import EventForm from '../_components/EventForm'
 
 const page = () => {
   return (
     <div className="relative">
-      <EventForm />
+      <EventForm mode="create" />
     </div>
   )
 }

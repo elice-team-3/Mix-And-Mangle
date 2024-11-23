@@ -2,6 +2,7 @@
 
 import dayjs from 'dayjs'
 import React from 'react'
+import Link from 'next/link'
 
 import { EventResponse } from '@/services/api.schemas'
 
@@ -11,7 +12,7 @@ interface EventBlockProps {
 
 const EventBlock = ({ event }: EventBlockProps) => {
   return (
-    <div className="w-full overflow-hidden rounded-12 border-2 border-solid border-black">
+    <div className="w-full overflow-hidden rounded-12 border-2 border-solid border-[#]">
       <div className="bg-primary px-16 py-12">
         <p className="text-20 font-semibold text-white">{event.name}</p>
       </div>
@@ -32,7 +33,7 @@ const EventBlock = ({ event }: EventBlockProps) => {
             </svg>
 
             <p>
-              {dayjs(event.start_date).format('YYYY-MM-DD')}-
+              {dayjs(event.start_date).format('YYYY-MM-DD')} ~{' '}
               {dayjs(event.end_date).format('YYYY-MM-DD')}
             </p>
           </div>
@@ -68,6 +69,22 @@ const EventBlock = ({ event }: EventBlockProps) => {
           </div>
           <p className="text-14 text-[#838383]">{event.description}</p>
           <div className="h-1 w-full bg-gray-200" />
+          <div className="flex items-end gap-16">
+            <Link href={`/event/detail/${event.event_id}`}>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 16.0029H7.24C7.37161 16.0036 7.50207 15.9784 7.62391 15.9286C7.74574 15.8789 7.85656 15.8055 7.95 15.7129L14.87 8.78287L17.71 6.00287C17.8037 5.90991 17.8781 5.7993 17.9289 5.67745C17.9797 5.55559 18.0058 5.42488 18.0058 5.29287C18.0058 5.16086 17.9797 5.03015 17.9289 4.90829C17.8781 4.78643 17.8037 4.67583 17.71 4.58287L13.47 0.292869C13.377 0.19914 13.2664 0.124746 13.1446 0.0739772C13.0227 0.0232086 12.892 -0.00292969 12.76 -0.00292969C12.628 -0.00292969 12.4973 0.0232086 12.3754 0.0739772C12.2536 0.124746 12.143 0.19914 12.05 0.292869L9.23 3.12287L2.29 10.0529C2.19732 10.1463 2.12399 10.2571 2.07423 10.379C2.02446 10.5008 1.99924 10.6313 2 10.7629V15.0029C2 15.2681 2.10536 15.5224 2.29289 15.71C2.48043 15.8975 2.73478 16.0029 3 16.0029ZM12.76 2.41287L15.59 5.24287L14.17 6.66287L11.34 3.83287L12.76 2.41287ZM4 11.1729L9.93 5.24287L12.76 8.07287L6.83 14.0029H4V11.1729ZM19 18.0029H1C0.734784 18.0029 0.48043 18.1082 0.292893 18.2958C0.105357 18.4833 0 18.7377 0 19.0029C0 19.2681 0.105357 19.5224 0.292893 19.71C0.48043 19.8975 0.734784 20.0029 1 20.0029H19C19.2652 20.0029 19.5196 19.8975 19.7071 19.71C19.8946 19.5224 20 19.2681 20 19.0029C20 18.7377 19.8946 18.4833 19.7071 18.2958C19.5196 18.1082 19.2652 18.0029 19 18.0029Z"
+                  fill="black"
+                />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -25,7 +25,10 @@ import {
 } from '@/components/ui/select'
 import { apiEventsPostBody } from '@/services/이벤트/이벤트.zod'
 import { Textarea } from '@/components/ui/textarea'
-import { useApiEventsPost } from '@/services/이벤트/이벤트'
+import {
+  useApiEventsEventIdPut,
+  useApiEventsPost,
+} from '@/services/이벤트/이벤트'
 
 const categories = [
   '금융업',
@@ -46,7 +49,13 @@ const categories = [
   '화학 산업',
 ]
 
-const EventForm = () => {
+interface EventFormProps {
+  defaultValues?: z.infer<typeof apiEventsPostBody>
+  id?: number
+  mode: 'create' | 'edit'
+}
+
+const EventForm = ({ defaultValues, id, mode }: EventFormProps) => {
   const router = useRouter()
 
   const today = new Date()
@@ -55,7 +64,7 @@ const EventForm = () => {
   const eventForm = useForm<z.infer<typeof apiEventsPostBody>>({
     resolver: zodResolver(apiEventsPostBody),
     mode: 'onBlur',
-    defaultValues: {
+    defaultValues: defaultValues || {
       name: '',
       description: '',
       status: '대기중',
@@ -67,21 +76,36 @@ const EventForm = () => {
     },
   })
 
-  const mutation = useApiEventsPost()
+  const createMutation = useApiEventsPost()
+  const editMutation = useApiEventsEventIdPut()
 
   const handleSubmit = () => {
     const data = eventForm.getValues()
 
-    mutation.mutate(
-      {
-        data,
-      },
-      {
-        onSuccess: () => {
-          router.push('/event')
+    if (mode === 'create') {
+      createMutation.mutate(
+        { data },
+        {
+          onSuccess: () => {
+            router.push('/event')
+          },
         },
-      },
-    )
+      )
+    }
+
+    if (mode === 'edit' && id && defaultValues) {
+      editMutation.mutate(
+        {
+          eventId: id,
+          data,
+        },
+        {
+          onSuccess: () => {
+            router.push('/event')
+          },
+        },
+      )
+    }
   }
 
   return (
@@ -129,6 +153,9 @@ const EventForm = () => {
                       const value = e.target.value
                       eventForm.setValue('start_date', value + ' 00:00:00')
                     }}
+                    defaultValue={
+                      eventForm.watch('start_date').split(' ')[0] || todayString
+                    }
                     type="date"
                   />
                   <Input
@@ -136,6 +163,9 @@ const EventForm = () => {
                       const value = e.target.value
                       eventForm.setValue('end_date', value + ' 00:00:00')
                     }}
+                    defaultValue={
+                      eventForm.watch('end_date').split(' ')[0] || todayString
+                    }
                     type="date"
                   />
                 </div>
@@ -209,14 +239,29 @@ const EventForm = () => {
             />
           </motion.div>
           <div className="absolute bottom-0 left-0 flex w-full gap-16 phone:fixed phone:p-16">
+            {mode === 'edit' && (
+              <Button
+                type="button"
+                variant="tertiary"
+                fit
+                onClick={() => {
+                  handleSubmit()
+                }}
+              >
+                수정
+              </Button>
+            )}
             <Button
               type="button"
-              disabled={mutation.isPending}
               onClick={() => {
-                handleSubmit()
+                if (mode === 'create') {
+                  handleSubmit()
+                } else {
+                  router.push('/event/detail/' + id + '/match')
+                }
               }}
             >
-              행사 만들기
+              {mode === 'create' ? '행사 만들기' : '세부 정보 설정하기'}
             </Button>
           </div>
         </form>
