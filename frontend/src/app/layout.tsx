@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 
 import './globals.css'
+import InitialSetting from '@/components/InitialSetting'
+import { Toaster } from '@/components/ui/toaster'
+
 import Providers from './_provider'
 
 export const metadata: Metadata = {
@@ -20,6 +23,8 @@ export default function RootLayout({
           <div className="mx-auto h-full w-[30%] bg-white px-12 py-24 phone:w-full">
             {children}
           </div>
+          <InitialSetting />
+          <Toaster />
         </Providers>
       </body>
     </html>

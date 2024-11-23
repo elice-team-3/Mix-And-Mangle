@@ -16,7 +16,7 @@ import { z as zod } from 'zod'
 export const apiUsersGetResponseItem = zod.object({
   user_id: zod.string(),
   name: zod.string(),
-  birth_date: zod.string().date(),
+  birth_date: zod.string(),
   job: zod.string().optional(),
   personality: zod
     .enum(['내향적', '양면성', '외향적'])
