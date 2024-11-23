@@ -5,7 +5,7 @@
  * 
 Mix&Mingle API Server
 
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.6.0
  */
 import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import type {
@@ -27,12 +27,11 @@ import type {
 import type {
   AIApiEventsEventIdAiGrouppingPost200,
   EventCreateRequest,
-  EventGroupInfo,
   EventGroupingRequest,
   EventResponse,
   EventUpdateRequest,
   HTTPValidationError,
-  SessionResponse,
+  QuizBulkCreateSchema,
 } from '../api.schemas'
 import { customInstance } from '../../utils/axios'
 import type { ErrorType, BodyType } from '../../utils/axios'
@@ -873,88 +872,294 @@ export const useAIApiEventsEventIdAiGrouppingPost = <
 
   return useMutation(mutationOptions)
 }
+
 /**
- * 이벤트에 속한 참여자 그룹핑합니다.
- * @summary 이벤트 참여자 그룹핑
+ * 이벤트에 관련된 퀴즈를 AI를 통해 생성합니다.
+ * @summary 이벤트 퀴즈 Ai 생성
  */
-export const apiEventsEventIdSetGroupPost = (
+export const aIApiEventsEventIdAiQuizGet = (
   eventId: number,
-  eventGroupInfo: BodyType<EventGroupInfo>,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<SessionResponse[]>(
-    {
-      url: `/api/events/${eventId}/set_group`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      data: eventGroupInfo,
-      signal,
-    },
+  return customInstance<QuizBulkCreateSchema>(
+    { url: `/api/events/${eventId}/ai-quiz`, method: 'GET', signal },
     options,
   )
 }
 
-export const getApiEventsEventIdSetGroupPostMutationOptions = <
-  TError = ErrorType<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
-    TError,
-    { eventId: number; data: BodyType<EventGroupInfo> },
-    TContext
-  >
-  request?: SecondParameter<typeof customInstance>
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
-  TError,
-  { eventId: number; data: BodyType<EventGroupInfo> },
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {}
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
-    { eventId: number; data: BodyType<EventGroupInfo> }
-  > = (props) => {
-    const { eventId, data } = props ?? {}
-
-    return apiEventsEventIdSetGroupPost(eventId, data, requestOptions)
-  }
-
-  return { mutationFn, ...mutationOptions }
+export const getAIApiEventsEventIdAiQuizGetQueryKey = (eventId: number) => {
+  return [`/api/events/${eventId}/ai-quiz`] as const
 }
 
-export type ApiEventsEventIdSetGroupPostMutationResult = NonNullable<
-  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>
+export const getAIApiEventsEventIdAiQuizGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {}
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAIApiEventsEventIdAiQuizGetQueryKey(eventId)
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>
+  > = ({ signal }) =>
+    aIApiEventsEventIdAiQuizGet(eventId, requestOptions, signal)
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!eventId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type AIApiEventsEventIdAiQuizGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>
 >
-export type ApiEventsEventIdSetGroupPostMutationBody = BodyType<EventGroupInfo>
-export type ApiEventsEventIdSetGroupPostMutationError =
+export type AIApiEventsEventIdAiQuizGetQueryError =
   ErrorType<HTTPValidationError>
 
-/**
- * @summary 이벤트 참여자 그룹핑
- */
-export const useApiEventsEventIdSetGroupPost = <
+export function useAIApiEventsEventIdAiQuizGet<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
   TError = ErrorType<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
-    TError,
-    { eventId: number; data: BodyType<EventGroupInfo> },
-    TContext
-  >
-  request?: SecondParameter<typeof customInstance>
-}): UseMutationResult<
-  Awaited<ReturnType<typeof apiEventsEventIdSetGroupPost>>,
-  TError,
-  { eventId: number; data: BodyType<EventGroupInfo> },
-  TContext
-> => {
-  const mutationOptions =
-    getApiEventsEventIdSetGroupPostMutationOptions(options)
+>(
+  eventId: number,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >
+    request?: SecondParameter<typeof customInstance>
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useAIApiEventsEventIdAiQuizGet<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useAIApiEventsEventIdAiQuizGet<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary 이벤트 퀴즈 Ai 생성
+ */
 
-  return useMutation(mutationOptions)
+export function useAIApiEventsEventIdAiQuizGet<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getAIApiEventsEventIdAiQuizGetQueryOptions(
+    eventId,
+    options,
+  )
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>
+  }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getAIApiEventsEventIdAiQuizGetSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {}
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAIApiEventsEventIdAiQuizGetQueryKey(eventId)
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>
+  > = ({ signal }) =>
+    aIApiEventsEventIdAiQuizGet(eventId, requestOptions, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type AIApiEventsEventIdAiQuizGetSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>
+>
+export type AIApiEventsEventIdAiQuizGetSuspenseQueryError =
+  ErrorType<HTTPValidationError>
+
+export function useAIApiEventsEventIdAiQuizGetSuspense<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+export function useAIApiEventsEventIdAiQuizGetSuspense<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+export function useAIApiEventsEventIdAiQuizGetSuspense<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+}
+/**
+ * @summary 이벤트 퀴즈 Ai 생성
+ */
+
+export function useAIApiEventsEventIdAiQuizGetSuspense<
+  TData = Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+  TError = ErrorType<HTTPValidationError>,
+>(
+  eventId: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof aIApiEventsEventIdAiQuizGet>>,
+        TError,
+        TData
+      >
+    >
+    request?: SecondParameter<typeof customInstance>
+  },
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData>
+} {
+  const queryOptions = getAIApiEventsEventIdAiQuizGetSuspenseQueryOptions(
+    eventId,
+    options,
+  )
+
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData> }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
 }

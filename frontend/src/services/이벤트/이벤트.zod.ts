@@ -5,7 +5,7 @@
  * 
 Mix&Mingle API Server
 
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.6.0
  */
 import { z as zod } from 'zod'
 
@@ -20,6 +20,8 @@ export const apiEventsGetResponseItem = zod.object({
   status: zod.string(),
   start_date: zod.string(),
   end_date: zod.string(),
+  participant_count: zod.number().optional(),
+  event_category: zod.string().or(zod.null()),
   additional_info: zod.string().optional(),
   created_at: zod.string(),
   updated_at: zod.string(),
@@ -37,6 +39,8 @@ export const apiEventsPostBody = zod.object({
   status: zod.enum(['대기중', '진행중', '종료됨', '취소됨']).optional(),
   start_date: zod.string().datetime(),
   end_date: zod.string().datetime(),
+  participant_count: zod.number().optional(),
+  event_category: zod.string(),
   additional_info: zod.string().optional(),
 })
 
@@ -55,6 +59,8 @@ export const apiEventsEventIdGetResponse = zod.object({
   status: zod.string(),
   start_date: zod.string(),
   end_date: zod.string(),
+  participant_count: zod.number().optional(),
+  event_category: zod.string().or(zod.null()),
   additional_info: zod.string().optional(),
   created_at: zod.string(),
   updated_at: zod.string(),
@@ -78,6 +84,8 @@ export const apiEventsEventIdPutBody = zod.object({
     .optional(),
   start_date: zod.string().datetime().or(zod.null()),
   end_date: zod.string().datetime().or(zod.null()),
+  participant_count: zod.number().optional(),
+  event_category: zod.string().or(zod.null()),
   additional_info: zod.string().or(zod.null()).optional(),
 })
 
@@ -88,6 +96,8 @@ export const apiEventsEventIdPutResponse = zod.object({
   status: zod.string(),
   start_date: zod.string(),
   end_date: zod.string(),
+  participant_count: zod.number().optional(),
+  event_category: zod.string().or(zod.null()),
   additional_info: zod.string().optional(),
   created_at: zod.string(),
   updated_at: zod.string(),
@@ -123,26 +133,20 @@ export const aIApiEventsEventIdAiGrouppingPostResponse = zod.record(
 )
 
 /**
- * 이벤트에 속한 참여자 그룹핑합니다.
- * @summary 이벤트 참여자 그룹핑
+ * 이벤트에 관련된 퀴즈를 AI를 통해 생성합니다.
+ * @summary 이벤트 퀴즈 Ai 생성
  */
-export const apiEventsEventIdSetGroupPostParams = zod.object({
+export const aIApiEventsEventIdAiQuizGetParams = zod.object({
   event_id: zod.number(),
 })
 
-export const apiEventsEventIdSetGroupPostBody = zod.object({
-  group_info: zod.record(zod.string(), zod.number()),
-})
-
-export const apiEventsEventIdSetGroupPostResponseItem = zod.object({
-  session_id: zod.number(),
-  user_id: zod.string(),
+export const aIApiEventsEventIdAiQuizGetResponse = zod.object({
   event_id: zod.number(),
-  group_id: zod.number().or(zod.null()).optional(),
-  created_at: zod.string(),
-  updated_at: zod.string(),
-  deleted_at: zod.string().or(zod.null()).optional(),
+  quizzes: zod.array(
+    zod.object({
+      question: zod.string(),
+      answer: zod.string(),
+      options: zod.array(zod.string()),
+    }),
+  ),
 })
-export const apiEventsEventIdSetGroupPostResponse = zod.array(
-  apiEventsEventIdSetGroupPostResponseItem,
-)

@@ -5,8 +5,18 @@
  * 
 Mix&Mingle API Server
 
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.6.0
  */
+export type ApiSessionsGetParams = {
+user_id?: string | null;
+event_id?: number | null;
+group_id?: number | null;
+};
+
+export type ApiQuizGetParams = {
+event_id?: number | null;
+};
+
 export type AIApiEventsEventIdAiGrouppingPost200 = {[key: string]: { [key: string]: unknown }};
 
 export type ValidationErrorLocItem = string | number;
@@ -61,6 +71,11 @@ export interface UserUpdateRequest {
   /** 성격 */
   personality?: UserUpdateRequestPersonality;
 }
+
+/**
+ * 성격
+ */
+export type UserResponsePersonality = Personality | null;
 
 export interface UserResponse {
   /** 생년월일 */
@@ -138,6 +153,46 @@ export interface SessionCreateRequest {
   user_id: string;
 }
 
+export interface QuizSchema {
+  /** 정답 */
+  answer: string;
+  /** 선택지 */
+  options: string[];
+  /** 문제 */
+  question: string;
+}
+
+export interface QuizResponse {
+  /** 정답 */
+  answer: string;
+  /** 이벤트 아이디 */
+  event_id: number;
+  /** 퀴즈 아이디 */
+  id: number;
+  /** 선택지 */
+  options: string[];
+  /** 문제 */
+  question: string;
+}
+
+export interface QuizCreateRequest {
+  /** 정답 */
+  answer: string;
+  /** 이벤트 아이디 */
+  event_id: number;
+  /** 선택지 */
+  options: string[];
+  /** 문제 */
+  question: string;
+}
+
+export interface QuizBulkCreateSchema {
+  /** 이벤트 아이디 */
+  event_id: number;
+  /** 퀴즈 목록 */
+  quizzes: QuizSchema[];
+}
+
 export type Personality = typeof Personality[keyof typeof Personality];
 
 
@@ -147,11 +202,6 @@ export const Personality = {
   양면성: '양면성',
   외향적: '외향적',
 } as const;
-
-/**
- * 성격
- */
-export type UserResponsePersonality = Personality | null;
 
 export interface HTTPValidationError {
   detail?: ValidationError[];
@@ -182,6 +232,11 @@ export type EventUpdateRequestStartDate = string | null;
 export type EventUpdateRequestName = string | null;
 
 /**
+ * 이벤트 카테고리
+ */
+export type EventUpdateRequestEventCategory = string | null;
+
+/**
  * 이벤트 종료일
  */
 export type EventUpdateRequestEndDate = string | null;
@@ -203,13 +258,22 @@ export interface EventUpdateRequest {
   description: EventUpdateRequestDescription;
   /** 이벤트 종료일 */
   end_date: EventUpdateRequestEndDate;
+  /** 이벤트 카테고리 */
+  event_category: EventUpdateRequestEventCategory;
   /** 이벤트 이름 */
   name: EventUpdateRequestName;
+  /** 참가자 수 */
+  participant_count?: number;
   /** 이벤트 시작일 */
   start_date: EventUpdateRequestStartDate;
   /** 이벤트 상태 */
   status?: EventUpdateRequestStatus;
 }
+
+/**
+ * 이벤트 카테고리
+ */
+export type EventResponseEventCategory = string | null;
 
 /**
  * 삭제일
@@ -227,10 +291,14 @@ export interface EventResponse {
   description: string;
   /** 이벤트 종료일 */
   end_date: string;
+  /** 이벤트 카테고리 */
+  event_category: EventResponseEventCategory;
   /** 이벤트 아이디 */
   event_id: number;
   /** 이벤트 이름 */
   name: string;
+  /** 참가자 수 */
+  participant_count?: number;
   /** 이벤트 시작일 */
   start_date: string;
   /** 이벤트 상태 */
@@ -293,8 +361,12 @@ export interface EventCreateRequest {
   description: string;
   /** 이벤트 종료일 */
   end_date: string;
+  /** 이벤트 카테고리 */
+  event_category: string;
   /** 이벤트 이름 */
   name: string;
+  /** 참가자 수 */
+  participant_count?: number;
   /** 이벤트 시작일 */
   start_date: string;
   /** 이벤트 상태 */

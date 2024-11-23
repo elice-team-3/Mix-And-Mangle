@@ -5,9 +5,11 @@
  * 
 Mix&Mingle API Server
 
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.6.0
  */
-import { z as zod } from 'zod'
+import {
+  z as zod
+} from 'zod'
 
 /**
  * @summary 소켓 테스트
@@ -18,7 +20,7 @@ export const apiStaticGetResponse = zod.any()
  * @summary 이벤트 시작
  */
 export const apiEventEventIdStartGetParams = zod.object({
-  event_id: zod.string(),
+  "event_id": zod.number()
 })
 
 export const apiEventEventIdStartGetResponse = zod.any()
@@ -27,25 +29,28 @@ export const apiEventEventIdStartGetResponse = zod.any()
  * @summary 퀴즈 시작
  */
 export const apiEventEventIdStartQuizGetParams = zod.object({
-  event_id: zod.string(),
+  "event_id": zod.number()
 })
 
 export const apiEventEventIdStartQuizGetResponse = zod.any()
 
 /**
- * @summary 조 나눠서 세션 시작
- */
-export const apiEventEventIdStartSessionGetParams = zod.object({
-  event_id: zod.string(),
-})
-
-export const apiEventEventIdStartSessionGetResponse = zod.any()
-
-/**
+ * 네트워킹을 시작하는 메시지를 보냅니다.
  * @summary 네트워킹 시작
  */
 export const apiEventEventIdStartNetworkingGetParams = zod.object({
-  event_id: zod.string(),
+  "event_id": zod.number()
 })
 
 export const apiEventEventIdStartNetworkingGetResponse = zod.any()
+
+/**
+ * 네트워킹 대화 주제를 생성하는 메시지를 보냅니다.
+ * @summary 네트워킹 대화 주제 생성
+ */
+export const apiEventEventIdTopicGenerateGetParams = zod.object({
+  "event_id": zod.number()
+})
+
+export const apiEventEventIdTopicGenerateGetResponse = zod.any()
+

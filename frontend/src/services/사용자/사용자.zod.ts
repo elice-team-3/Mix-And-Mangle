@@ -5,27 +5,26 @@
  * 
 Mix&Mingle API Server
 
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.6.0
  */
-import { z as zod } from 'zod'
+import {
+  z as zod
+} from 'zod'
 
 /**
  * 사용자 목록을 조회합니다.
  * @summary 사용자 목록 조회
  */
 export const apiUsersGetResponseItem = zod.object({
-  user_id: zod.string(),
-  name: zod.string(),
-  birth_date: zod.string(),
-  job: zod.string().optional(),
-  personality: zod
-    .enum(['내향적', '양면성', '외향적'])
-    .or(zod.null())
-    .optional(),
-  interest: zod.array(zod.string()).optional(),
-  hobby: zod.array(zod.string()).optional(),
-  created_at: zod.string(),
-  updated_at: zod.string(),
+  "user_id": zod.string(),
+  "name": zod.string(),
+  "birth_date": zod.string().date(),
+  "job": zod.string().optional(),
+  "personality": zod.enum(['내향적', '양면성', '외향적']).or(zod.null()).optional(),
+  "interest": zod.array(zod.string()).optional(),
+  "hobby": zod.array(zod.string()).optional(),
+  "created_at": zod.string(),
+  "updated_at": zod.string()
 })
 export const apiUsersGetResponse = zod.array(apiUsersGetResponseItem)
 
@@ -34,16 +33,13 @@ export const apiUsersGetResponse = zod.array(apiUsersGetResponseItem)
  * @summary 사용자 생성
  */
 export const apiUsersPostBody = zod.object({
-  user_id: zod.string(),
-  name: zod.string(),
-  birth_date: zod.string().date(),
-  job: zod.string().optional(),
-  personality: zod
-    .enum(['내향적', '양면성', '외향적'])
-    .or(zod.null())
-    .optional(),
-  interest: zod.array(zod.string()).optional(),
-  hobby: zod.array(zod.string()).optional(),
+  "user_id": zod.string(),
+  "name": zod.string(),
+  "birth_date": zod.string().date(),
+  "job": zod.string().optional(),
+  "personality": zod.enum(['내향적', '양면성', '외향적']).or(zod.null()).optional(),
+  "interest": zod.array(zod.string()).optional(),
+  "hobby": zod.array(zod.string()).optional()
 })
 
 /**
@@ -51,22 +47,19 @@ export const apiUsersPostBody = zod.object({
  * @summary 사용자 조회
  */
 export const apiUsersUserIdGetParams = zod.object({
-  user_id: zod.string(),
+  "user_id": zod.string()
 })
 
 export const apiUsersUserIdGetResponse = zod.object({
-  user_id: zod.string(),
-  name: zod.string(),
-  birth_date: zod.string().date(),
-  job: zod.string().optional(),
-  personality: zod
-    .enum(['내향적', '양면성', '외향적'])
-    .or(zod.null())
-    .optional(),
-  interest: zod.array(zod.string()).optional(),
-  hobby: zod.array(zod.string()).optional(),
-  created_at: zod.string(),
-  updated_at: zod.string(),
+  "user_id": zod.string(),
+  "name": zod.string(),
+  "birth_date": zod.string().date(),
+  "job": zod.string().optional(),
+  "personality": zod.enum(['내향적', '양면성', '외향적']).or(zod.null()).optional(),
+  "interest": zod.array(zod.string()).optional(),
+  "hobby": zod.array(zod.string()).optional(),
+  "created_at": zod.string(),
+  "updated_at": zod.string()
 })
 
 /**
@@ -74,34 +67,28 @@ export const apiUsersUserIdGetResponse = zod.object({
  * @summary 사용자 수정
  */
 export const apiUsersUserIdPutParams = zod.object({
-  user_id: zod.string(),
+  "user_id": zod.string()
 })
 
 export const apiUsersUserIdPutBody = zod.object({
-  name: zod.string().or(zod.null()),
-  birth_date: zod.string().date().or(zod.null()),
-  job: zod.string().or(zod.null()).optional(),
-  personality: zod
-    .enum(['내향적', '양면성', '외향적'])
-    .or(zod.null())
-    .optional(),
-  interest: zod.array(zod.string()).or(zod.null()).optional(),
-  hobby: zod.array(zod.string()).or(zod.null()).optional(),
+  "name": zod.string().or(zod.null()),
+  "birth_date": zod.string().date().or(zod.null()),
+  "job": zod.string().or(zod.null()).optional(),
+  "personality": zod.enum(['내향적', '양면성', '외향적']).or(zod.null()).optional(),
+  "interest": zod.array(zod.string()).or(zod.null()).optional(),
+  "hobby": zod.array(zod.string()).or(zod.null()).optional()
 })
 
 export const apiUsersUserIdPutResponse = zod.object({
-  user_id: zod.string(),
-  name: zod.string(),
-  birth_date: zod.string().date(),
-  job: zod.string().optional(),
-  personality: zod
-    .enum(['내향적', '양면성', '외향적'])
-    .or(zod.null())
-    .optional(),
-  interest: zod.array(zod.string()).optional(),
-  hobby: zod.array(zod.string()).optional(),
-  created_at: zod.string(),
-  updated_at: zod.string(),
+  "user_id": zod.string(),
+  "name": zod.string(),
+  "birth_date": zod.string().date(),
+  "job": zod.string().optional(),
+  "personality": zod.enum(['내향적', '양면성', '외향적']).or(zod.null()).optional(),
+  "interest": zod.array(zod.string()).optional(),
+  "hobby": zod.array(zod.string()).optional(),
+  "created_at": zod.string(),
+  "updated_at": zod.string()
 })
 
 /**
@@ -109,5 +96,6 @@ export const apiUsersUserIdPutResponse = zod.object({
  * @summary 사용자 삭제
  */
 export const apiUsersUserIdDeleteParams = zod.object({
-  user_id: zod.string(),
+  "user_id": zod.string()
 })
+
