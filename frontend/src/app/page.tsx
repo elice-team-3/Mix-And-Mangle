@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <div>
       <Button variant="dark">다음</Button>
+      <Input />
       <Select>
         <SelectTrigger>
           <SelectValue placeholder="hello" />
