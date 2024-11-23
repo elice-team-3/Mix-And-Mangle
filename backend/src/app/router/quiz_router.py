@@ -44,11 +44,7 @@ async def _(
         session: AsyncSession = Depends(get_session),
 ):
     event_id = bulk_create.event_id
-    event = await session.scalar(
-        select(Event)
-        .where(Event.id == event_id)
-        .where(Event.is_deleted == False)
-    )
+    event = await session.scalar(select(Event).where(Event.id == event_id))
     if not event:
         raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
 

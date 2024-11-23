@@ -56,6 +56,7 @@ class EventCreateRequest(BaseModel):
     status: EVENTSTATUS = Field(EVENTSTATUS.PENDING, description="이벤트 상태")
     start_date: datetime = Field(..., description="이벤트 시작일")
     end_date: datetime = Field(..., description="이벤트 종료일")
+    event_category: str = Field(..., description="이벤트 카테고리")
     additional_info: str = Field("", description="추가 정보")
 
     @field_validator('start_date', 'end_date', mode='before')
@@ -77,6 +78,7 @@ class EventUpdateRequest(BaseModel):
     status: EVENTSTATUS | None = Field(EVENTSTATUS.PENDING, description="이벤트 상태")
     start_date: datetime | None = Field(..., description="이벤트 시작일")
     end_date: datetime | None = Field(..., description="이벤트 종료일")
+    event_category: str | None = Field(..., description="이벤트 카테고리")
     additional_info: str | None = Field("", description="추가 정보")
 
     @field_validator('start_date', 'end_date', mode='before')
@@ -100,6 +102,7 @@ class EventResponse(BaseModel):
     status: str = Field(..., description="이벤트 상태")
     start_date: str = Field(..., description="이벤트 시작일")
     end_date: str = Field(..., description="이벤트 종료일")
+    event_category: str | None = Field(..., description="이벤트 카테고리")
     additional_info: str = Field("", description="추가 정보")
     created_at: str = Field(..., description="생성일")
     updated_at: str = Field(..., description="수정일")
@@ -153,14 +156,17 @@ class QuizCreateRequest(BaseModel):
     answer: str = Field(..., description="정답")
     options: list[str] = Field(..., description="선택지")
 
+
 class QuizSchema(BaseModel):
     question: str = Field(..., description="문제")
     answer: str = Field(..., description="정답")
     options: list[str] = Field(..., description="선택지")
 
+
 class QuizBulkCreateSchema(BaseModel):
     event_id: int = Field(..., description="이벤트 아이디")
     quizzes: list[QuizSchema] = Field(..., description="퀴즈 목록")
+
 
 @dataclass
 class QuizListRequest:
