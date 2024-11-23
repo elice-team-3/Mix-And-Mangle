@@ -1,0 +1,307 @@
+import re
+import json
+from datetime import datetime
+from tokenize import group
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.app.schema import EventResponse, EventCreateRequest, EventUpdateRequest, EventGroupingRequest, EventGroupInfo, \
+    SessionResponse
+from src.client.elice_ai_client import get_elice_client
+from src.db.model import Event, User, Session
+from src.db.session import get_session
+
+router = APIRouter()
+
+
+@router.post(
+    "/events",
+    name="이벤트 생성",
+    description="이벤트를 생성합니다.",
+    status_code=201,
+    response_model=EventResponse,
+    response_description="Created",
+    tags=["이벤트"]
+)
+async def _(
+        event: EventCreateRequest,
+        db: AsyncSession = Depends(get_session)
+):
+    event = Event(
+        name=event.name,
+        description=event.description,
+        status=event.status.value,
+        start_date=event.start_date,
+        end_date=event.end_date,
+        additional_info=event.additional_info
+    )
+
+    db.add(event)
+    await db.commit()
+    await db.refresh(event)
+
+    return EventResponse(
+        event_id=event.id,
+        name=event.name,
+        description=event.description,
+        status=event.status,
+        start_date=event.start_date.strftime("%Y-%m-%d %H:%M:%S"),
+        end_date=event.end_date.strftime("%Y-%m-%d %H:%M:%S"),
+        additioal_info=event.additional_info,
+        created_at=event.formatted_created_at,
+        updated_at=event.formatted_updated_at,
+        delated_at=event.formatted_deleted_at
+    )
+
+
+@router.get(
+    "/events/{event_id}",
+    name="이벤트 조회",
+    description="이벤트를 조회합니다.",
+    status_code=200,
+    response_model=EventResponse,
+    response_description="Ok",
+    tags=["이벤트"]
+)
+async def _(
+        event_id: int,
+        db: AsyncSession = Depends(get_session)
+):
+    event = await db.scalars(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    event = event.first()
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    return EventResponse(
+        event_id=event.id,
+        name=event.name,
+        description=event.description,
+        status=event.status,
+        start_date=event.start_date.strftime("%Y-%m-%d %H:%M:%S"),
+        end_date=event.end_date.strftime("%Y-%m-%d %H:%M:%S"),
+        additioal_info=event.additional_info,
+        created_at=event.formatted_created_at,
+        updated_at=event.formatted_updated_at,
+        delated_at=event.formatted_deleted_at
+    )
+
+
+@router.get(
+    "/events",
+    name="이벤트 목록 조회",
+    description="이벤트 목록을 조회합니다.",
+    status_code=200,
+    response_model=list[EventResponse],
+    response_description="Ok",
+    tags=["이벤트"]
+)
+async def _(
+        db: AsyncSession = Depends(get_session)
+):
+    event_list = await db.scalars(
+        select(Event)
+        .where(Event.is_deleted == False)
+        .order_by(Event.created_at.desc())
+    )
+
+    return [
+        EventResponse(
+            event_id=event.id,
+            name=event.name,
+            description=event.description,
+            status=event.status,
+            start_date=event.start_date.strftime("%Y-%m-%d %H:%M:%S"),
+            end_date=event.end_date.strftime("%Y-%m-%d %H:%M:%S"),
+            additioal_info=event.additional_info,
+            created_at=event.formatted_created_at,
+            updated_at=event.formatted_updated_at,
+            delated_at=event.formatted_deleted_at
+        ) for event in event_list
+    ]
+
+
+@router.put(
+    "/events/{event_id}",
+    name="이벤트 수정",
+    description="이벤트를 수정합니다.",
+    status_code=200,
+    response_model=EventResponse,
+    response_description="Ok",
+    tags=["이벤트"]
+)
+async def _(
+        event_id: int,
+        update_request: EventUpdateRequest,
+        db: AsyncSession = Depends(get_session)
+):
+    event = await db.scalars(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    event = event.first()
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    for key, value in update_request.model_dump(exclude_unset=True).items():
+        if key == "status":
+            value = value.value
+        setattr(event, key, value)
+
+    await db.commit()
+    await db.refresh(event)
+
+    return EventResponse(
+        event_id=event.id,
+        name=event.name,
+        description=event.description,
+        status=event.status,
+        start_date=event.start_date.strftime("%Y-%m-%d %H:%M:%S"),
+        end_date=event.end_date.strftime("%Y-%m-%d %H:%M:%S"),
+        additioal_info=event.additional_info,
+        created_at=event.formatted_created_at,
+        updated_at=event.formatted_updated_at,
+        delated_at=event.formatted_deleted_at
+    )
+
+
+@router.delete(
+    "/events/{event_id}",
+    name="이벤트 삭제",
+    status_code=204,
+    description="이벤트를 삭제합니다.",
+    response_description="Deleted",
+    tags=["이벤트"]
+)
+async def _(
+        event_id: int,
+        db: AsyncSession = Depends(get_session)
+):
+    event = await db.scalars(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    event = event.first()
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    event.is_deleted = True
+    event.deleted_at = datetime.now()
+
+    await db.commit()
+
+
+@router.post(
+    "/events/{event_id}/ai_groupping",
+    status_code=200,
+    name="이벤트 AI 그룹핑",
+    description="이벤트에 속한 참여자를 AI로 그룹핑합니다.",
+    response_model=dict[str, dict],
+    response_description="Ok",
+    tags=["이벤트"]
+)
+async def _(
+        event_id: int,
+        grouping_option: EventGroupingRequest,
+        db: AsyncSession = Depends(get_session),
+        elice_client=Depends(get_elice_client)
+):
+    grouping_instruction = [
+        f"다음 기준에 따라 참가자들을 {grouping_option.count}개 조로 최대한 균등하게 편성해줘\n"
+        f"직업 : {grouping_option.job.value}",
+        f"성격 : {grouping_option.personality.value}",
+        f"관심사 : {grouping_option.interest.value}\n",
+    ]
+
+    users = await db.scalars(
+        select(User)
+        .join(User.sessions)
+        .where(Session.event_id == event_id)
+        .where(User.is_deleted == False)
+    )
+    users = users.all()
+    if len(users) <= grouping_option.count:
+        raise HTTPException(409, f"참여자가 부족합니다 {len(users)}")
+
+    for idx, user in enumerate(users):
+        grouping_instruction.extend(
+            [
+                f"{idx} 번 참가자\n",
+                f"user_id : {user.user_id}\n",
+                f"사용자 이름 : {user.name}\n",
+                f"생일 : {user.birth_date}\n",
+                f"직업 : {user.job}\n",
+                f"성격 : {user.personality}\n",
+                f"관심사 : {user.hobby}\n"
+            ]
+        )
+
+    grouping_instruction.extend(
+        [
+            "균등하게 편성한 결과를 {user_id: 조번호} 와 같은 json 형태로 user_id를 넣어서 알려주고 ",
+            "다른 설명 없이 편성 결과에 대한 json 포멧만 출력해줘"
+        ]
+    )
+    print("".join(grouping_instruction))
+    message = [{
+        "role": "user",
+        "content": "".join(grouping_instruction)
+    }]
+    resp = await elice_client.helpy_chat(message)
+    print(resp)
+    matches = re.findall(r'(\{[^}]*\})', resp)
+    print(matches[0])
+    group_info = json.loads(matches[0])
+
+    return {
+        "group_info": group_info
+    }
+
+
+@router.post(
+    "/events/{event_id}/set_group",
+    status_code=200,
+    name="이벤트 참여자 그룹핑",
+    description="이벤트에 속한 참여자 그룹핑합니다.",
+    response_model=list[SessionResponse],
+    response_description="Ok",
+    tags=["이벤트"]
+)
+async def _(
+        event_id: int,
+        request: EventGroupInfo,
+        db: AsyncSession = Depends(get_session),
+):
+    sessions = await db.scalars(
+        select(Session)
+        .where(Session.event_id == event_id)
+        .where(Session.is_deleted == False)
+    )
+
+    group_info: dict = request.group_info
+    sessions = list(sessions)
+    for session in sessions:
+        if group_id := group_info.get(session.user_id):
+            session.group_id = group_id
+
+    await db.commit()
+
+    return [
+        SessionResponse(
+            session_id=session.id,
+            user_id=session.user_id,
+            event_id=session.event_id,
+            group_id=session.group_id,
+            created_at=session.formatted_created_at,
+            updated_at=session.formatted_updated_at,
+            deleted_at=session.formatted_deleted_at if session.deleted_at else None,
+        )
+        for session in sessions
+    ]

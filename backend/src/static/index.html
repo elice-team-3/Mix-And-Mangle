@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket.IO Client</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .message-box {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .messages {
+            border: 1px solid #ccc;
+            padding: 1em;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 1em;
+        }
+
+        .message {
+            padding: 0.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // var socket = io(
+            //     "https://feat-server-init-dev-cloud-socketio.gabiacloud.com/", // for testing on local index.html
+            //     { extraHeaders: { "X-Cloud-Session": "CLOUD_MASTER" } }
+            // );
+            var socket = io(); // for request to the same server
+            var roomContainer = document.getElementById('room-container');
+            var chatContainer = document.getElementById('chat-container');
+            var roomInput = document.getElementById('room-input');
+            var joinButton = document.getElementById('join-button');
+            var messagesContainer = document.getElementById('messages');
+            var messageBox = document.getElementById('message-box');
+            var currentRoom = null;
+
+            joinButton.addEventListener('click', function () {
+                var event = roomInput.value;
+                if (event) {
+                    data = {
+                        "event_id" : event,
+                        "user_id" : "test_user_id",
+                    }
+
+                    socket.emit('join', data);
+                    currentRoom = event;
+                    roomContainer.classList.add('hidden');
+                    chatContainer.classList.remove('hidden');
+                    document.getElementById('event-title').innerHTML = "event : " + event;
+                }
+            });
+
+            socket.on('message', function (data) {
+                console.log('Message from server:', data);
+                var messageElement = document.createElement('div');
+                messageElement.className = 'message';
+                messageElement.textContent = JSON.stringify(data, null, 2);
+                messagesContainer.appendChild(messageElement);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="room-container" class="chat-container">
+        <h1>Join a Event</h1>
+        <input type="text" id="room-input" class="message-box" placeholder="Enter Event ID">
+        <button id="join-button">Join</button>
+    </div>
+    <div id="chat-container" class="chat-container hidden">
+        <h1 id="room-title"></h1>
+        <div id="messages" class="messages"></div>
+    </div>
+</body>
+
+</html>
