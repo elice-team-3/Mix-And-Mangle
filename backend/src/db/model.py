@@ -93,6 +93,7 @@ class Event(TimestampAndSoftDeleteBase):
     start_date: Mapped[datetime] = mapped_column(nullable=False)
     end_date: Mapped[datetime] = mapped_column(nullable=False)
 
+    event_category: Mapped[str] = mapped_column(nullable=False)
     additional_info: Mapped[str] = mapped_column(nullable=True)
 
     # Relationship
