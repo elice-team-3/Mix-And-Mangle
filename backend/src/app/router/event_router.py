@@ -11,7 +11,9 @@ from src.app.schema import (
     EventUpdateRequest,
     EventGroupingRequest,
     EventGroupInfo,
-    SessionResponse, QuizBulkCreateSchema, QuizSchema
+    SessionResponse,
+    QuizBulkCreateSchema,
+    QuizSchema
 )
 from src.client.elice_ai_client import get_elice_client
 from src.db.model import Event, User, Session
@@ -216,7 +218,7 @@ async def _(
     status_code=200,
     name="이벤트 AI 그룹핑",
     description="이벤트에 속한 참여자를 AI로 그룹핑합니다.",
-    response_model=dict[str, dict],
+    response_model=dict,
     response_description="Ok",
 )
 async def _(
@@ -266,8 +268,17 @@ async def _(
     print(matches[0])
     group_info = json.loads(matches[0])
 
+    group_infos = []
+    for user in users:
+        user_id = user.user_id
+        group_infos.append({
+            "user_id": user_id,
+            "user_name": user.name,
+            "group_id": group_info.get(user_id)
+        })
+
     return {
-        "group_info": group_info
+        "group_info": group_infos
     }
 
 
@@ -291,13 +302,17 @@ async def _(
         .where(Session.is_deleted == False)
     )
 
-    group_info: dict = request.group_info
+    group_info: list = request.group_info
+    group_info_map = {info["user_id"]: info["group_id"] for info in group_info}
     sessions = set(list(sessions))
     for session in sessions:
-        if group_id := group_info.get(session.user_id):
+        if group_id := group_info_map.get(session.user_id):
             session.group_id = group_id
 
     await db.commit()
+
+    for session in sessions:
+        await db.refresh(session)
 
     return [
         SessionResponse(

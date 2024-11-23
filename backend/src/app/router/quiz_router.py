@@ -48,9 +48,14 @@ async def _(
     if not event:
         raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
 
+    old_quizzes = await session.scalars(select(Quiz).where(Quiz.event_id == event_id))
+    for old_quiz in old_quizzes:
+        await session.delete(old_quiz)
+
     new_quizzes = [
         Quiz(event_id=event_id, **q.model_dump()) for q in bulk_create.quizzes
     ]
+
     session.add_all(new_quizzes)
 
     await session.commit()
