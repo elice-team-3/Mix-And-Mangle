@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, desc
 
 from src.app.schema import QuizCreateRequest, QuizResponse, QuizListRequest, QuizBulkCreateSchema
 from src.db.model import Quiz, Event
@@ -77,9 +77,10 @@ async def _(
         session: AsyncSession = Depends(get_session),
 ):
     stmt = select(Quiz)
-    stmt = stmt.order_by(Quiz.id)
     if quiz_request.event_id:
         stmt = stmt.where(Quiz.event_id == quiz_request.event_id)
+    stmt = stmt.order_by(desc(Quiz.id))
+
     result = await session.execute(stmt)
 
     return [QuizResponse(**q.__dict__) for q in set(result.scalars())]
