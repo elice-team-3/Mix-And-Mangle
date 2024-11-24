@@ -146,6 +146,11 @@ class SessionResponse(BaseModel):
     deleted_at: str | None = Field(None, description="삭제일")
 
 
+class SessionGroupResponse(BaseModel):
+    event_id: int = Field(..., description="이벤트 아이디")
+    group_info: list[dict] = Field(..., description="그룹 정보")
+
+
 ################
 #  Quiz Schema #
 ################
