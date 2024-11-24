@@ -1,4 +1,15 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+import pwaModule from 'next-pwa'
 
-export default nextConfig;
+const withPWA = pwaModule({
+  dest: 'public',
+})
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  reactStrictMode: false,
+}
+
+export default withPWA(nextConfig)

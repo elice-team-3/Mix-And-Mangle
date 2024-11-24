@@ -1,0 +1,13 @@
+{
+  "theme_color": "#643bd5",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "display": "fullscreen",
+  "dir": "auto",
+  "lang": "ko",
+  "name": "Mix&Mangle",
+  "short_name": "Mix&Mangle",
+  "start_url": "/",
+  "scope": "/",
+  "description": "Mix&Mangle"
+}
