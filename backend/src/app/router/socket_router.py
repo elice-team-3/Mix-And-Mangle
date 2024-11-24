@@ -74,6 +74,56 @@ async def _(
 
 
 @router.get(
+    "/event/{event_id}/networking-prepare",
+    name="네트워킹 준비",
+    description="네트워킹을 준비하는 메시지를 보냅니다.\n"
+                "socket을 통해 event_id에 해당하는 room에\n"
+                "'networking.prepare' event를 발생시킵니다."
+)
+async def _(
+        event_id: int,
+        session=Depends(get_session),
+):
+    event = await session.scalar(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    await sioserver.emit("networking.prepare", room=event_id)
+
+    event.status = "networking.prepare"
+    await session.commit()
+
+
+@router.get(
+    "/event/{event_id}/networking-group-prepare",
+    name="네트워킹 그룹 준비",
+    description="네트워킹 그룹을 준비하는 메시지를 보냅니다.\n"
+                "socket을 통해 event_id에 해당하는 room에\n"
+                "'networking.group.prepare' event를 발생시킵니다."
+)
+async def _(
+        event_id: int,
+        session=Depends(get_session),
+):
+    event = await session.scalar(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    await sioserver.emit("networking.group.prepare", room=event_id)
+
+    event.status = "networking.group.prepare"
+    await session.commit()
+
+
+@router.get(
     "/event/{event_id}/start-networking",
     name="네트워킹 시작",
     description="네트워킹을 시작하는 메시지를 보냅니다.\n"
@@ -108,18 +158,17 @@ async def _(
         session=Depends(get_session),
         elice_client=Depends(get_elice_client)
 ):
-    event = await session.scalar(
+    event = await session.scalars(
         select(Event)
         .where(Event.id == event_id)
         .where(Event.is_deleted == False)
     )
-
+    event = event.first()
     if not event:
         raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
 
     topic_instruction = [
         "다음 행사 정보를 바탕으로 참가자들이 서로에게 질문하고 대답할 수 있는 주제를 생성해주세요.\n",
-        "주제는 관련 토픽의 최신 트렌드를 바탕으로 만들어주세요.\n"
         "주제는 최대 5개까지 만들어주세요.\n",
         f"행사명: {event.name}\n",
         f"행사 카테고리: {event.event_category}\n",
@@ -147,3 +196,61 @@ async def _(
     topic = random.choice(topics)
     await sioserver.emit("network.topic.generate", data={"topic": topic}, room=event_id)
     return {"topic": topic}
+
+
+@router.put(
+    "/event/{event_id}/timer/{action}",
+    name="타이머 시작",
+    description="타이머를 시작하는 메시지를 보냅니다.\n"
+                "socket을 통해 event_id에 해당하는 room에\n"
+                "'timer.start', 'timer.stop', timer.reset event를 발생시킵니다."
+)
+async def _(
+        event_id: int,
+        action: str,
+        session=Depends(get_session),
+):
+    event = await session.scalar(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    if action == "start":
+        await sioserver.emit("timer.start", room=event_id)
+    elif action == "stop":
+        await sioserver.emit("timer.stop", room=event_id)
+    elif action == "reset":
+        await sioserver.emit("timer.reset", room=event_id)
+    else:
+        raise HTTPException(status_code=400, detail="action을 잘못 입력하셨습니다.")
+
+    return {"action": action}
+
+
+@router.get(
+    "/event/{event_id}/networking-end",
+    name="네트워킹 종료",
+    description="네트워킹을 종료하는 메시지를 보냅니다.\n"
+                "socket을 통해 event_id에 해당하는 room에\n"
+                "'networking.end' event를 발생시킵니다."
+)
+async def _(
+        event_id: int,
+        session=Depends(get_session),
+):
+    event = await session.scalar(
+        select(Event)
+        .where(Event.id == event_id)
+        .where(Event.is_deleted == False)
+    )
+    if not event:
+        raise HTTPException(status_code=404, detail="이벤트를 찾을 수 없습니다.")
+
+    event.status = "networking.end"
+    await session.commit()
+
+    await sioserver.emit("networking.end", room=event_id)
+    return {"message": "네트워킹 종료"}
