@@ -7,7 +7,7 @@ interface UserStore {
   user: UserResponse | null
   isMaster: boolean
   setIsMaster: (isMaster: boolean) => void
-  setUser: (user: UserResponse) => void
+  setUser: (user: UserResponse | null) => void
 }
 
 export const userStore = create<UserStore>((set) => ({

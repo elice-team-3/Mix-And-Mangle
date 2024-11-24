@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import React from 'react'
 import Link from 'next/link'
 
@@ -18,11 +19,16 @@ const Page = () => {
     <div className="h-full overflow-y-scroll">
       <h1 className="mb-20 text-22 font-semibold">만든 행사 목록</h1>
       <ul className="mb-24 flex flex-col gap-16">
-        {query.data.map((event) => {
+        {query.data.map((event, idx) => {
           return (
-            <li key={event.event_id}>
+            <motion.li
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              key={event.event_id}
+            >
               <EventBlock event={event} />
-            </li>
+            </motion.li>
           )
         })}
       </ul>

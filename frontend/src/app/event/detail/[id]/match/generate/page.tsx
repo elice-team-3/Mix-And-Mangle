@@ -109,18 +109,25 @@ const Page = (props: PageProps) => {
   }, [])
 
   return (
-    <AIGenerator
-      step1="데이터를 분석하고 있어요."
-      step1Complete
-      step2="프로필을 매칭중이에요."
-      step2Complete={mutation.isSuccess}
-      step3="거의 다 됐어요!"
-      step3Complete={quizMutation.isSuccess}
-      isComplete={isComplete}
-      onComplete={() => {
-        router.push('/event/detail/' + props.params.id + '/match/complete')
-      }}
-    />
+    <>
+      <img
+        src="/images/gradient.png"
+        alt=""
+        className="fixed left-0 top-0 h-full w-full"
+      />
+      <AIGenerator
+        step1="데이터를 분석하고 있어요."
+        step1Complete
+        step2="프로필을 매칭중이에요."
+        step2Complete={mutation.isSuccess}
+        step3="거의 다 됐어요!"
+        step3Complete={quizMutation.isSuccess}
+        isComplete={isComplete}
+        onComplete={() => {
+          router.push('/event/detail/' + props.params.id + '/match/complete')
+        }}
+      />
+    </>
   )
 }
 

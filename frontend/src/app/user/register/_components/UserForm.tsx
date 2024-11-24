@@ -112,6 +112,9 @@ const INTERESTS = [
     activeIcon: '/icon/16-1.png',
   },
 ]
+
+const JOBS = ['회사원', '프리랜서', '학생', '취업준비생']
+
 const UserForm = () => {
   const [step, setStep] = useState<'info' | 'interest'>('info')
   const router = useRouter()
@@ -124,7 +127,7 @@ const UserForm = () => {
       user_id: uuidv4(),
       name: '',
       birth_date: '',
-      job: '',
+      job: JOBS[0],
       personality: '내향적',
       interest: [],
     },
@@ -267,11 +270,11 @@ const UserForm = () => {
                             <SelectValue placeholder="직업을 선택해주세요" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="개발자">개발자</SelectItem>
-                            <SelectItem value="디자이너">디자이너</SelectItem>
-                            <SelectItem value="기획자">기획자</SelectItem>
-                            <SelectItem value="마케터">마케터</SelectItem>
-                            <SelectItem value="기타">기타</SelectItem>
+                            {JOBS.map((job) => (
+                              <SelectItem key={job} value={job}>
+                                {job}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </FormControl>

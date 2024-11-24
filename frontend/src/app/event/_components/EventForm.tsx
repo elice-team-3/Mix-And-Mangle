@@ -160,8 +160,9 @@ const EventForm = ({ defaultValues, id, mode }: EventFormProps) => {
             <FormItem>
               <FormLabel>일정</FormLabel>
               <FormControl>
-                <div className="flex flex-col gap-16">
+                <div className="flex gap-16">
                   <Input
+                    className="p-4"
                     onChange={(e) => {
                       const value = e.target.value
                       eventForm.setValue('start_date', value + ' 00:00:00')
@@ -172,6 +173,7 @@ const EventForm = ({ defaultValues, id, mode }: EventFormProps) => {
                     type="date"
                   />
                   <Input
+                    className="p-4"
                     onChange={(e) => {
                       const value = e.target.value
                       eventForm.setValue('end_date', value + ' 00:00:00')

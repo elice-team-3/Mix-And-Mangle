@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
@@ -28,7 +29,17 @@ export default function Home() {
   return (
     <div className="flex h-full flex-col justify-center">
       <div className="fixed left-0 top-0 flex h-full w-full flex-col items-center bg-gradient-to-t from-[#BED1FF] to-white" />
-      <div className="relative">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.5,
+          },
+        }}
+        className="relative"
+      >
         <p className="mb-40 text-22 font-semibold">
           안녕하세요!
           <br /> 사용자 유형을 선택해주세요.
@@ -43,7 +54,7 @@ export default function Home() {
         <Button variant="secondary" onClick={handleClickMaster}>
           주최자
         </Button>
-      </div>
+      </motion.div>
     </div>
   )
 }

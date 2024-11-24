@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 import { EventResponse } from '@/services/api.schemas'
 import { Button } from '@/components/ui/button'
@@ -17,10 +18,16 @@ const End = ({ event }: { event: EventResponse }) => {
     </motion.div>,
   )
 
+  const router = useRouter()
+
   const [step, setStep] = useState(0)
 
   return (
-    <div className="flex h-full w-full flex-col items-center">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex h-full w-full flex-col items-center"
+    >
       <h1 className={cn('mb-44 text-28', blackSans.className)}>
         자유 네트워킹
       </h1>
@@ -37,38 +44,54 @@ const End = ({ event }: { event: EventResponse }) => {
         </>
       )}
       {step === 1 && (
-        <div className="w-full">
-          <div className="mb-50 rounded-12 border-2 border-solid border-[#CAC1E1] bg-white py-20">
-            <p className="text-center text-20 font-bold">
-              자유롭게 진행해보세요!
-            </p>
-          </div>
-        </div>
-      )}
-      {step !== 2 && (
-        <div className="fixed bottom-0 left-0 mx-auto flex w-full gap-16 p-16 phone:w-full">
-          <Button
-            type="button"
-            onClick={() => {
-              setStep((prev) => prev + 1)
-
-              if (step === 1) {
-                setMessage(
-                  <>
-                    <strong className="text-primary">{event.name}</strong>
-                    모든 세션이 종료되었어요.
-                    <br /> 함께해주셔서 감사합니다. <br />
-                    🎉다음에 또 만나요🎉
-                  </>,
-                )
-              }
-            }}
+        <>
+          <img
+            src="/images/gradient.png"
+            alt=""
+            className="fixed left-0 top-0 h-full w-full"
+          />
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="relative w-full"
           >
-            다음
-          </Button>
-        </div>
+            <div className="mb-50 rounded-12 border-2 border-solid border-[#CAC1E1] bg-white py-20">
+              <p className="text-center text-20 font-bold">
+                자유롭게 진행해보세요!
+              </p>
+            </div>
+            <div className="fixed left-0 flex w-full items-center justify-center gap-16">
+              <img className="" src="/images/tags.png" alt="" />
+            </div>
+          </motion.div>
+        </>
       )}
-    </div>
+      <div className="fixed bottom-0 left-0 mx-auto flex w-full gap-16 p-16 phone:w-full">
+        <Button
+          type="button"
+          onClick={() => {
+            setStep((prev) => prev + 1)
+
+            if (step === 2) {
+              router.push('/')
+            }
+
+            if (step === 1) {
+              setMessage(
+                <>
+                  <strong className="text-primary">{event.name}</strong>
+                  모든 세션이 종료되었어요.
+                  <br /> 함께해주셔서 감사합니다. <br />
+                  🎉다음에 또 만나요🎉
+                </>,
+              )
+            }
+          }}
+        >
+          {step === 2 ? '종료' : '다음'}
+        </Button>
+      </div>
+    </motion.div>
   )
 }
 

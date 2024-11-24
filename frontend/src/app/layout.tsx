@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import InitialSetting from '@/components/InitialSetting'
 import { Toaster } from '@/components/ui/toaster'
+import LogoutButton from '@/components/LogoutButton'
 
 import Providers from './_provider'
 
@@ -25,6 +26,9 @@ export default function RootLayout({
           </div>
           <InitialSetting />
           <Toaster />
+          <div className="fixed right-20 top-40">
+            <LogoutButton />
+          </div>
         </Providers>
       </body>
     </html>
