@@ -1,3 +1,9 @@
+import pwaModule from 'next-pwa'
+
+const withPWA = pwaModule({
+  dest: 'public',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -6,4 +12,4 @@ const nextConfig = {
   reactStrictMode: false,
 }
 
-export default nextConfig
+export default withPWA(nextConfig)
