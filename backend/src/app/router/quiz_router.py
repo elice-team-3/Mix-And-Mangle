@@ -77,7 +77,7 @@ async def _(
         session: AsyncSession = Depends(get_session),
 ):
     stmt = select(Quiz)
-    stmt.order_by(Quiz.id)
+    stmt = stmt.order_by(Quiz.id)
     if quiz_request.event_id:
         stmt = stmt.where(Quiz.event_id == quiz_request.event_id)
     result = await session.execute(stmt)

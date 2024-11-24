@@ -120,7 +120,6 @@ async def _(
     )
 
     event_list = set(event_list.all())
-    print(len(event_list))
     return [
         EventResponse(
             event_id=event.id,
