@@ -81,9 +81,11 @@ async def _(
         stmt = stmt.where(Quiz.event_id == quiz_request.event_id)
     stmt = stmt.order_by(desc(Quiz.id))
 
-    result = await session.execute(stmt)
+    result = await session.scalars(stmt)
+    quiz_list = set(result)
+    sorted_quiz_list = sorted(quiz_list, key=lambda quiz: quiz.id, reverse=True)
 
-    return [QuizResponse(**q.__dict__) for q in set(result.scalars())]
+    return [QuizResponse(**q.__dict__) for q in sorted_quiz_list]
 
 
 @router.delete(
