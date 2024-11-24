@@ -117,7 +117,7 @@ class EventGroupingRequest(BaseModel):
 
 
 class EventGroupInfo(BaseModel):
-    group_info: dict[str, int] = Field(..., description="조 편성 목록 {'user_id' : int}")
+    group_info: list[dict] = Field(..., description="조 편성 목록 {'user_id' : int}")
 
 
 ##################
@@ -142,7 +142,7 @@ class SessionResponse(BaseModel):
     event_id: int = Field(..., description="이벤트 아이디")
     group_id: int | None = Field(None, description="그룹 아이디")
     created_at: str = Field(..., description="생성일")
-    updated_at: str = Field(..., description="수정일")
+    updated_at: str | None = Field(None, description="수정일")
     deleted_at: str | None = Field(None, description="삭제일")
 
 
