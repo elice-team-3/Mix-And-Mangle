@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from src.app.schema import SessionResponse, SessionCreateRequest, SessionListQuery
+from src.app.schema import SessionResponse, SessionCreateRequest, SessionListQuery, SessionGroupResponse
 from src.db.model import Session, Event
 from src.db.session import get_session
 
@@ -131,11 +131,46 @@ async def _(
             event_id=session.event_id,
             group_id=session.group_id,
             created_at=session.formatted_created_at,
-            updated_at=session.formatted_updated_at,
             deleted_at=session.formatted_deleted_at if session.deleted_at else None,
         )
         for session in sessions
     ]
+
+
+@router.get(
+    "/sessions/{event_id}/group",
+    name="사용자의 그룹 조회",
+    description="사용자의 그룹을 조회합니다.",
+    status_code=200,
+    response_model=SessionGroupResponse,
+    response_description="Ok",
+)
+async def _(
+        event_id: int,
+        db: AsyncSession = Depends(get_session)
+):
+    sessions = await db.scalars(
+        select(Session)
+        .where(Session.event_id == event_id)
+        .where(Session.is_deleted == False)
+    )
+
+    sessions = set(sessions.unique().all())
+
+    group_infos = []
+    for session in sessions:
+        group_infos.append(
+            {
+             "user_id": session.user_id,
+             "user_name" : session.user.name,
+             "group_id": session.group_id
+            }
+        )
+
+    return SessionGroupResponse(
+        event_id=event_id,
+        group_info=group_infos
+    )
 
 
 @router.delete(
