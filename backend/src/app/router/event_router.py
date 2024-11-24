@@ -306,7 +306,7 @@ async def _(
             event_id=session.event_id,
             group_id=session.group_id,
             created_at=session.formatted_created_at,
-            updated_at=session.formatted_updated_at,
+            # updated_at=session.formatted_updated_at,
             deleted_at=session.formatted_deleted_at if session.deleted_at else None,
         )
         for session in sessions
