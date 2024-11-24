@@ -8,10 +8,10 @@ class PERSONALITY(Enum):
 
 
 class EVENTSTATUS(Enum):
-    PENDING = "대기중"
-    ONGOING = "진행중"
-    FINISHED = "종료됨"
-    CANCLED = "취소됨"
+    PENDING = "wait"
+    ONGOING = "ongoing"
+    FINISHED = "finished"
+    CANCELED = "canceled"
 
 
 class GROUPINGOPTION(Enum):
